@@ -1,6 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
 
+// TODO tie back to theme
+const customBodyStyle = {
+  "backgroundColor": "palegoldenrod",
+  "margin": 0,
+  "padding": 0,
+  "fontFamily": "Roboto Mono"
+}
+
 export default function HTML(props) {
   return (
     <html {...props.htmlAttributes}>
@@ -11,9 +19,13 @@ export default function HTML(props) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        {/* Linked to custom fonts */}
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'/>
         {props.headComponents}
       </head>
-      <body {...props.bodyAttributes}>
+      {/* Customised body style */}
+      <body {...props.bodyAttributes} style={customBodyStyle}>
         {props.preBodyComponents}
         <div
           key={`body`}

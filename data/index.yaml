@@ -1,0 +1,79 @@
+# TODO this will be replaced with a custom transformer
+---
+- type: TextDigitalDocument
+  title: Romeo & Juliet
+  date: '2021-03-02'
+  image: './images/ukulele.png'
+  keywords:
+  - ukulele
+  - dire
+  - straits
+- type: ImageGallery
+  title: Example Album
+  date: '2019-02-14'
+  image: './example-album/2015-03-12 19.58.40.jpg'
+- type: TextDigitalDocument
+  title: Only You
+  date: '2019-01-03'
+  image: './images/ukulele.png'
+  keywords:
+  - ukulele
+  - yazoo
+- type: Recipe
+  title: Black Lentil Dahl
+  date: '2018-12-08'
+  image: './black-lentil-dahl/hero.jpg'
+  keywords:
+  - vegan
+- type: Quiz
+  title: British Birds
+  date: '2018-12-05'
+  image: './images/Quiz.jpg'
+- type: Quiz
+  title: UK Prime Ministers
+  date: '2018-10-30'
+  image: './images/Quiz.jpg'
+- type: Table
+  title: The Nth Film
+  date: '2017-06-01'
+  image: './images/Table.jpg'
+  keywords:
+  - list
+  - silly
+- type: VideoObject
+  title: Big Buck Bunny (Private)
+  slug: big-buck-bunny
+  date: '2018-01-10'
+  image: './big-buck-bunny/hero.jpg'
+  private: false
+- type: VideoObject
+  title: Lego Big Ben (with soundtrack of choice)
+  date: '2018-01-08'
+  image: './lego-big-ben-with-soundtrack-of-choice/hero.jpg'
+  private: false
+  keywords:
+  - time
+  - lapse
+- type: ImageObject
+  title: All Things Ukulele
+  date: '2016-10-30'
+  image: './all-things-ukulele/hero.jpg'
+  keywords:
+  - instrument
+  - love
+  - cambridge
+- type: VideoObject
+  title: Lego Camper Van
+  date: '2017-01-08'
+  image: './lego-camper-van/hero.jpg'
+  keywords:
+  - time
+  - lapse
+- type: Recipe
+  title: Sea Bass Roasted With Rosemary And Lemon
+  slug: roasted-sea-bass
+  date: '2014-01-12'
+  image: './roasted-sea-bass/hero.jpg'
+  keywords:
+  - seafood
+  - fish

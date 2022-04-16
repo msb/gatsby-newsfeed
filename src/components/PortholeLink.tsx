@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import { Link } from "gatsby";
 import styled from "styled-components"
@@ -35,45 +35,54 @@ const Porthole = styled.div`
   margin-top: 8px;
 `
 
-// TODO experiment with <a>> wrapping the <img> and being the sized element
-// -> allows the hover to act on <a> -> allows the hover to be style driven.
-const StyledLink = styled(Link)`
-  border-radius: ${PORTHOLE_SIZE}px;
-  box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.80);
-  display: block;
-  height: 100%;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 90;
-  text-indent: -9999px;
-`
-
-const BASE_IMAGE_STYLE: React.CSSProperties = {
-  width: "auto",
-  position: "absolute",
-  transition: "all 0.2s ease-in-out",
+type StyledLinkProps = {
+  // the width to height ratio of the contained image
+  widthHeightRatio: number
 }
 
-type LinkImageProps = {
+// This styled <Link> sizes itself based on it's contained image's `widthHeightRatio` and the
+// `PORTHOLE_SIZE`. It also handles the zoom effect when the mouse hovers over.
+const StyledLink = styled(Link)<StyledLinkProps>`
+  border-radius: ${PORTHOLE_SIZE}px;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  z-index: 90;
+  transition: all 0.2s ease-in-out;
+
+  width: ${({widthHeightRatio}) => PORTHOLE_SIZE * widthHeightRatio}px;
+  height: ${PORTHOLE_SIZE}px;
+  top: 0px;
+  left: ${({widthHeightRatio}) => - (PORTHOLE_SIZE * widthHeightRatio - PORTHOLE_SIZE) / 2}px;
+
+  &:hover {
+    width: ${({widthHeightRatio}) => HOVER_SIZE * widthHeightRatio}px;
+    height: ${HOVER_SIZE}px;
+    top: ${- (HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
+    left: ${({widthHeightRatio}) => - (widthHeightRatio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
+  }
+`
+
+const LinkImage = styled.img`
+  width: 100%;
+  height: 100%;
+`
+
+type LinkPictureProps = {
   // image data for the `<sources>` element
   sources: SourceProps[]
   // image data for the `<img>` element
   fallback?: { src: string } & Partial<IResponsiveImageProps>
   // the image alt text
   alt: string
-  // the image style
-  style: React.CSSProperties
 }
 
 // Renders the `<picture>` element of the page link. I couldn't use `<GatsbyImage>` here
 // because of the styling requirements.
-const LinkImage:React.FC<LinkImageProps> = ({ sources, fallback, alt, style }) => (
+const LinkPicture:React.FC<LinkPictureProps> = ({ sources, fallback, alt }) => (
   <picture>
     { sources.map((source: SourceProps) => <source key={source.type} {...source}/>) }
-    <img decoding="async" {...fallback} alt={alt} style={style}/>
+    <LinkImage decoding="async" {...fallback} alt={alt}/>
   </picture>
 )
 
@@ -98,26 +107,9 @@ export type LinkProperties = {
 // to zoom slightly.
 const PortholeLink:React.FC<LinkProperties> = ({ title, slug, image: { childImageSharp } }) => {
 
-  const { gatsbyImageData: imageData } = childImageSharp
-  const sizedWidth = PORTHOLE_SIZE * imageData.width / imageData.height
+  const { gatsbyImageData: {images, width, height} } = childImageSharp
 
-  const initialImagePositionStyle = {
-    height: PORTHOLE_SIZE, top: 0, left: - (sizedWidth - PORTHOLE_SIZE) / 2
-  }
-
-  const [imagePositionStyle, setImagePositionStyle] = useState(initialImagePositionStyle);
-
-  // hover start
-  const onMouseEnter = () => setImagePositionStyle({
-    height: HOVER_SIZE,
-    top: - (HOVER_SIZE - PORTHOLE_SIZE) / 2,
-    left: - (sizedWidth * HOVER_SIZE / PORTHOLE_SIZE - PORTHOLE_SIZE) / 2,
-  })
-
-  // hover finish
-  const onMouseLeave = () => setImagePositionStyle(initialImagePositionStyle)
-
-  if (imageData.images.sources === undefined || imageData.images.fallback === undefined) {
+  if (images.sources === undefined || images.fallback === undefined) {
     // these properties appear never to be `undefined` (maybe poor typing?) so no need
     // to handle this gracefully.
     return null
@@ -126,18 +118,9 @@ const PortholeLink:React.FC<LinkProperties> = ({ title, slug, image: { childImag
   return <>
     <Wrapper>
       <Porthole>
-        <StyledLink
-          to={ slug || kebabCase(title) } 
-          onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
-        >
-          { title }
+        <StyledLink to={ slug || kebabCase(title) } widthHeightRatio={width / height}>
+          <LinkPicture sources={images.sources} fallback={images.fallback} alt={title}/>
         </StyledLink>
-        <LinkImage
-          sources={imageData.images.sources}
-          fallback={imageData.images.fallback}
-          alt={title}
-          style={{...BASE_IMAGE_STYLE, ...imagePositionStyle}}
-        />
       </Porthole>
     </Wrapper>
     <Title>

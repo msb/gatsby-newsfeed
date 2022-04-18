@@ -5,7 +5,7 @@ import styled from "styled-components"
 
 type IconProps = {
   // size of the icon font in px
-  size?: number;
+  size?: number
 }
 
 // Simple component encapsulating styles for the material icons font.

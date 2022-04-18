@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import { Link } from "gatsby";
 import styled from "styled-components"
@@ -66,6 +66,7 @@ const StyledLink = styled(Link)<StyledLinkProps>`
 const LinkImage = styled.img`
   width: 100%;
   height: 100%;
+  transition: opacity 0.4s;
 `
 
 type LinkPictureProps = {
@@ -78,13 +79,18 @@ type LinkPictureProps = {
 }
 
 // Renders the `<picture>` element of the page link. I couldn't use `<GatsbyImage>` here
-// because of the styling requirements.
-const LinkPicture:React.FC<LinkPictureProps> = ({ sources, fallback, alt }) => (
-  <picture>
+// because of the styling requirements. Added a fade-in effect to the image.
+const LinkPicture:React.FC<LinkPictureProps> = ({ sources, fallback, alt }) => {
+
+  const [opacity, setOpacity] = useState(0)
+
+  return <picture>
     { sources.map((source: SourceProps) => <source key={source.type} {...source}/>) }
-    <LinkImage decoding="async" {...fallback} alt={alt}/>
+    <LinkImage decoding="async" {...fallback} alt={alt}
+      onLoad={() => setOpacity(1)} style={{opacity}
+    }/>
   </picture>
-)
+}
 
 // TODO doesn't belong here as PortholeLink is a specific instance of a page link.
 export type LinkProperties = {

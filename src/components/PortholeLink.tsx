@@ -37,10 +37,10 @@ const Porthole = styled.div`
 
 type StyledLinkProps = {
   // the width to height ratio of the contained image
-  widthHeightRatio: number
+  ratio: number
 }
 
-// This styled <Link> sizes itself based on it's contained image's `widthHeightRatio` and the
+// This styled <Link> sizes itself based on it's contained image's `ratio` and the
 // `PORTHOLE_SIZE`. It also handles the zoom effect when the mouse hovers over.
 const StyledLink = styled(Link)<StyledLinkProps>`
   border-radius: ${PORTHOLE_SIZE}px;
@@ -50,16 +50,16 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   z-index: 90;
   transition: all 0.2s ease-in-out;
 
-  width: ${({widthHeightRatio}) => PORTHOLE_SIZE * widthHeightRatio}px;
+  width: ${({ratio}) => PORTHOLE_SIZE * ratio}px;
   height: ${PORTHOLE_SIZE}px;
   top: 0px;
-  left: ${({widthHeightRatio}) => - (PORTHOLE_SIZE * widthHeightRatio - PORTHOLE_SIZE) / 2}px;
+  left: ${({ratio}) => - (PORTHOLE_SIZE * ratio - PORTHOLE_SIZE) / 2}px;
 
   &:hover {
-    width: ${({widthHeightRatio}) => HOVER_SIZE * widthHeightRatio}px;
+    width: ${({ratio}) => HOVER_SIZE * ratio}px;
     height: ${HOVER_SIZE}px;
     top: ${- (HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
-    left: ${({widthHeightRatio}) => - (widthHeightRatio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
+    left: ${({ratio}) => - (ratio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
   }
 `
 
@@ -124,7 +124,7 @@ const PortholeLink:React.FC<LinkProperties> = ({ title, slug, image: { childImag
   return <>
     <Wrapper>
       <Porthole>
-        <StyledLink to={ slug || kebabCase(title) } widthHeightRatio={width / height}>
+        <StyledLink to={ slug || kebabCase(title) } ratio={width / height}>
           <LinkPicture sources={images.sources} fallback={images.fallback} alt={title}/>
         </StyledLink>
       </Porthole>

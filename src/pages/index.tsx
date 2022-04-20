@@ -60,12 +60,13 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
 
   // FIXME recursion!!!!
   React.useEffect(() => {
-    // FIXME test this on the console
-    for (var i = 0; i < filteredList.length; i ++) {
-      if (i === list.length || filteredList[i].id !== list[i].id)
-        break
-    }
     if (isVisible) {
+      // FIXME test this on the console
+      for (var i = 0; i < filteredList.length; i ++) {
+        if (i === list.length || filteredList[i].id !== list[i].id)
+          break
+      }
+      console.log(i)
       if ((i < filteredList.length)) {
         // I have found that this delay is required when using `<VisibilitySensor>`.
         // Otherwise it doesn't get a change to change it's state.
@@ -93,7 +94,7 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
     <Layout navbar={<Icon>home</Icon>}>
       <Container>
         {
-          filterIndex(fullList, query).length === 0
+          filteredList.length === 0
           ?
           (
             query

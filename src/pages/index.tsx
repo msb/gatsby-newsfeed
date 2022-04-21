@@ -1,10 +1,10 @@
-import React, { useState } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { graphql, PageProps } from 'gatsby'
 import styled from "styled-components"
 import VisibilitySensor from 'react-visibility-sensor'
 import { Icon, Layout, LinkProperties, pageLinks } from "../components"
 import { useQuery } from "../providers/QueryProvider"
-import { debounce } from "lodash"
+import { debounce, isEqual } from "lodash"
 
 const Item = styled.div`
   padding-left: 8px;
@@ -54,41 +54,34 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
 
   const [list, setList] = useState<Post[]>([])
 
-  const [filteredList, setFilteredList] = useState<Post[]>([])
+  const [page, setPage] = useState(1)
+
+  const filteredList = useMemo(() => (
+    fullList.filter(item => {
+      const tags = item.keywords || [];
+      const textToSearch = [item.title, item.type, ...tags];
+      return textToSearch.find(
+        text => text.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      )
+    })
+  ), [query])
 
   // FIXME scroll to top when query changes
 
-  // FIXME recursion!!!!
-  React.useEffect(() => {
-    if (isVisible) {
-      // FIXME test this on the console
-      for (var i = 0; i < filteredList.length; i ++) {
-        if (i === list.length || filteredList[i].id !== list[i].id)
-          break
-      }
-      console.log(i)
-      if ((i < filteredList.length)) {
+  useEffect(() => {
+    if (isVisible || page === 1) {
+      if (!isEqual(list.map(item => item.id), filteredList.map(item => item.id))) {
         // I have found that this delay is required when using `<VisibilitySensor>`.
         // Otherwise it doesn't get a change to change it's state.
-        setTimeout(() => setList([...filteredList.slice(0, i + PAGE_SIZE)]), PAGE_DELAY)
-      } else if (list.length > filteredList.length) {
-        // The displayed list only needs to be truncated
-        setTimeout(() => setList(filteredList), PAGE_DELAY)
+        setTimeout(() => {
+          setList([...filteredList.slice(0, page * PAGE_SIZE)])
+          setPage(page + 1)
+        }, PAGE_DELAY)
       }
     }
-  }, [list, filteredList, isVisible])
+  }, [list, filteredList, isVisible, page])
 
-  React.useEffect(() => {
-    if (query || filteredList.length === 0) {
-      setFilteredList(fullList.filter(item => {
-        const tags = item.keywords || [];
-        const textToSearch = [item.title, item.type, ...tags];
-        return textToSearch.find(
-          text => text.toLowerCase().indexOf(query.toLowerCase()) !== -1
-        )
-      }))
-    }
-  }, [query, filteredList])
+  useEffect(() => setPage(1), [query])
 
   return (
     <Layout navbar={<Icon>home</Icon>}>
@@ -115,7 +108,7 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
             )
           })
         }
-        <Item>
+        <Item style={{width: "100%"}}>
           <VisibilitySensor intervalDelay={50} onChange={isVisible => setIsVisible(isVisible)}>
             <div>&nbsp;</div>
           </VisibilitySensor>

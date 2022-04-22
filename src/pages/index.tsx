@@ -1,8 +1,10 @@
-import * as React from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { graphql, PageProps } from 'gatsby'
 import styled from "styled-components"
 import VisibilitySensor from 'react-visibility-sensor'
-import { Layout, LinkProperties, pageLinks } from "../components"
+import { Icon, Layout, LinkProperties, pageLinks } from "../components"
+import { useQuery } from "../providers/QueryProvider"
+import { isEqual } from "lodash"
 
 const Item = styled.div`
   padding-left: 8px;
@@ -15,6 +17,15 @@ const Container = styled.div`
   flex-wrap: wrap;
   box-sizing: border-box;
   justify-content: center;
+`
+
+// Used as "visible" element for the <VisibilitySensor> to work with.
+const ListEnd = styled.div`
+  width: 100%;
+  height: 1px;
+  &::before {
+    content: "\\a0";
+  }
 `
 
 // Defines the index for a content item.
@@ -40,42 +51,81 @@ type DataProps = {
 const PAGE_SIZE = 8
 // The delay in ms between rendering the next chunk of page links.
 const PAGE_DELAY = 100
+// The number of the 1st page.
+const STARTING_PAGE = 1
 
 // The newsfeed's home page - renders a list of page links ordered by date published.
 // For efficiency, the only the potion of the list visible on the viewport is rendered.
-// More of the list is rendered as 
+// More of the list is rendered as the page is scrolled down. The page also filters
+// content based on the query context.
 const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<DataProps>) => {
 
-  const [isVisible, setIsVisible] = React.useState(true)
+  // the query context
+  const {query} = useQuery()
 
-  const [list, setList] = React.useState<Post[]>([])
+  // whether or not <ListEnd> is visible
+  const [isVisible, setIsVisible] = useState(true)
 
-  React.useEffect(() => {
-    if (isVisible && list.length !== fullList.length) {
-      // I have found that this delay is required when using `<VisibilitySensor>`.
-      // Otherwise it doesn't get a change to change it's state.
-      setTimeout(() => setList([...fullList.slice(0, list.length + PAGE_SIZE)]), PAGE_DELAY)
+  // The actual list of rendered items.
+  const [list, setList] = useState<Post[]>([])
+
+  // The number of item pages rendered.
+  const [page, setPage] = useState(STARTING_PAGE)
+
+  const filteredList = useMemo(() => (
+    fullList.filter(item => {
+      const tags = item.keywords || [];
+      const textToSearch = [item.title, item.type, ...tags];
+      return textToSearch.find(
+        text => text.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      )
+    })
+  ), [query])
+
+  useEffect(() => {
+    if (isVisible || page === 1) {
+      if (!isEqual(list.map(item => item.id), filteredList.map(item => item.id))) {
+        // I have found that this delay is required when using `<VisibilitySensor>`.
+        // Otherwise it doesn't get a change to change it's state.
+        setTimeout(() => {
+          setList([...filteredList.slice(0, page * PAGE_SIZE)])
+          setPage(page + 1)
+        }, PAGE_DELAY)
+      }
     }
-  }, [list, isVisible])
+  }, [list, filteredList, isVisible, page])
+
+  // reset the page count
+  useEffect(() => setPage(STARTING_PAGE), [query])
 
   return (
     <Layout>
       <Container>
         {
+          filteredList.length === 0
+          ?
+          (
+            query
+            ?
+            <h3>
+              Nothing found for '{ query }'
+            </h3>
+            :
+            null
+          )
+          :
           list.map(item => {
             const Template = pageLinks[item.component || item.type]
             return (
-              <Item key={item.title}>
+              <Item key={item.id}>
                 <Template {...item} />
               </Item>
             )
           })
         }
-        <Item>
-          <VisibilitySensor intervalDelay={50} onChange={isVisible => setIsVisible(isVisible)}>
-            <div>&nbsp;</div>
-          </VisibilitySensor>
-        </Item>
+        <VisibilitySensor intervalDelay={50} onChange={isVisible => setIsVisible(isVisible)}>
+          <ListEnd/>
+        </VisibilitySensor>
       </Container>
     </Layout>
   )

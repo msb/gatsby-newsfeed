@@ -8,6 +8,7 @@ const config: GatsbyConfig = {
   },
   plugins: [
     "gatsby-plugin-styled-components",
+    "gatsby-plugin-layout",
     {
       resolve: `gatsby-source-filesystem`,
       options: {

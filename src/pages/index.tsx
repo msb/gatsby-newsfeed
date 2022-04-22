@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react"
+import React, { useState, useMemo, useEffect, ReactElement } from "react"
 import { graphql, PageProps } from 'gatsby'
 import styled from "styled-components"
 import VisibilitySensor from 'react-visibility-sensor'
-import { Icon, Layout, LinkProperties, pageLinks } from "../components"
+import { Layout, LinkProperties, pageLinks } from "../components"
 import { useQuery } from "../providers/QueryProvider"
 import { isEqual } from "lodash"
 
@@ -58,7 +58,7 @@ const STARTING_PAGE = 1
 // For efficiency, the only the potion of the list visible on the viewport is rendered.
 // More of the list is rendered as the page is scrolled down. The page also filters
 // content based on the query context.
-const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<DataProps>) => {
+const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<DataProps>): ReactElement => {
 
   // the query context
   const {query} = useQuery()
@@ -80,7 +80,7 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
         text => text.toLowerCase().indexOf(query.toLowerCase()) !== -1
       )
     })
-  ), [query])
+  ), [query, fullList])
 
   useEffect(() => {
     if (isVisible || page === 1) {
@@ -108,7 +108,7 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
             query
             ?
             <h3>
-              Nothing found for '{ query }'
+              Nothing found for &apos;{ query }&apos;
             </h3>
             :
             null

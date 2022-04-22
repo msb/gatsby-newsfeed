@@ -9,7 +9,7 @@ import * as content from './content'
 const pageLinks:{ [id: string] : React.FC<LinkProperties> } = {}
 
 // For now we only have one page link.
-for (let component in content) {
+for (const component in content) {
     pageLinks[component] = PortholeLink
 }
 

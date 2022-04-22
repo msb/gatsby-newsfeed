@@ -20,4 +20,4 @@ const QueryProvider: FC = ({children}) => {
 
 export default QueryProvider
 
-export const useQuery = () => React.useContext(QueryContext)
+export const useQuery = (): Query => React.useContext(QueryContext)

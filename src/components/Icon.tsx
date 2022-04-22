@@ -1,3 +1,5 @@
+// TODO should be able to configure this
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react'
 import styled from "styled-components"
 
@@ -13,7 +15,7 @@ const Icon = styled.i<IconProps>`
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: ${props => props.size || 24}px;
+  font-size: ${(props: IconProps) => props.size || 24}px;
   display: inline-block;
   line-height: 1;
   text-transform: none;

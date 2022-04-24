@@ -20,6 +20,7 @@ const config: GatsbyConfig = {
     "gatsby-plugin-sharp",
     "gatsby-transformer-yaml",
     "gatsby-transformer-sharp",
+    "gatsby-plugin-mdx",
   ],
 }
 

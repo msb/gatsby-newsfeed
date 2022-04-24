@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import { Link } from "gatsby";
 import styled from "styled-components"
-import { kebabCase } from "lodash"
-import { IResponsiveImageProps, SourceProps } from 'gatsby-plugin-image/dist/src/components/picture';
+import Picture from './Picture';
 
 // The size of the porthole in px.
 const PORTHOLE_SIZE = 200;
@@ -69,35 +68,12 @@ const LinkImage = styled.img`
   transition: opacity 0.4s;
 `
 
-type LinkPictureProps = {
-  // image data for the `<sources>` element
-  sources: SourceProps[]
-  // image data for the `<img>` element
-  fallback?: { src: string } & Partial<IResponsiveImageProps>
-  // the image alt text
-  alt: string
-}
-
-// Renders the `<picture>` element of the page link. I couldn't use `<GatsbyImage>` here
-// because of the styling requirements. Added a fade-in effect to the image.
-const LinkPicture:React.FC<LinkPictureProps> = ({ sources, fallback, alt }) => {
-
-  const [opacity, setOpacity] = useState(0)
-
-  return <picture>
-    { sources.map((source: SourceProps) => <source key={source.type} {...source}/>) }
-    <LinkImage decoding="async" {...fallback} alt={alt}
-      onLoad={() => setOpacity(1)} style={{opacity}
-    }/>
-  </picture>
-}
-
 // TODO doesn't belong here as PortholeLink is a specific instance of a page link.
 export type LinkProperties = {
   // the link's title
   title: string
   // the slug (used to link to the content page)
-  slug?: string
+  slug: string
   // the date the content was published (TODO show this somewhere)
   date: Date
   // the link's image data (Gatsby specific)
@@ -115,17 +91,17 @@ const PortholeLink:React.FC<LinkProperties> = ({ title, slug, image: { childImag
 
   const { gatsbyImageData: {images, width, height} } = childImageSharp
 
-  if (images.sources === undefined || images.fallback === undefined) {
-    // these properties appear never to be `undefined` (maybe poor typing?) so no need
-    // to handle this gracefully.
-    return null
-  }
+  const [opacity, setOpacity] = useState(0)
 
   return <>
     <Wrapper>
       <Porthole>
-        <StyledLink to={ slug || kebabCase(title) } ratio={width / height}>
-          <LinkPicture sources={images.sources} fallback={images.fallback} alt={title}/>
+        <StyledLink to={ slug } ratio={width / height}>
+          <Picture sources={images.sources}>
+            <LinkImage decoding="async" {...images.fallback} alt={title}
+              onLoad={() => setOpacity(1)} style={{opacity}}
+            />
+          </Picture>
         </StyledLink>
       </Porthole>
     </Wrapper>

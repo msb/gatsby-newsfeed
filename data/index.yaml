@@ -2,6 +2,7 @@
 ---
 - type: TextDigitalDocument
   title: Romeo & Juliet
+  slug: romeo-juliet # TODO s/b implicit
   date: '2021-03-02'
   image: './images/ukulele.png'
   keywords:
@@ -10,10 +11,12 @@
   - straits
 - type: ImageGallery
   title: Example Album
+  slug: example-album # TODO s/b implicit
   date: '2019-02-14'
   image: './example-album/2015-03-12 19.58.40.jpg'
 - type: TextDigitalDocument
   title: Only You
+  slug: only-you # TODO s/b implicit
   date: '2019-01-03'
   image: './images/ukulele.png'
   keywords:
@@ -21,20 +24,24 @@
   - yazoo
 - type: Recipe
   title: Black Lentil Dahl
+  slug: black-lentil-dahl # TODO s/b implicit
   date: '2018-12-08'
   image: './black-lentil-dahl/hero.jpg'
   keywords:
   - vegan
 - type: Quiz
   title: British Birds
+  slug: british_birds # TODO s/b implicit
   date: '2018-12-05'
   image: './images/Quiz.jpg'
 - type: Quiz
   title: UK Prime Ministers
+  slug: uk-prime-ministers # TODO s/b implicit
   date: '2018-10-30'
   image: './images/Quiz.jpg'
 - type: Table
   title: The Nth Film
+  slug: the-nth-film # TODO s/b implicit
   date: '2017-06-01'
   image: './images/Table.jpg'
   keywords:
@@ -48,6 +55,7 @@
   private: false
 - type: VideoObject
   title: Lego Big Ben (with soundtrack of choice)
+  slug: lego-big-ben-with-soundtrack-of-choice # TODO s/b implicit
   date: '2018-01-08'
   image: './lego-big-ben-with-soundtrack-of-choice/hero.jpg'
   private: false
@@ -56,6 +64,7 @@
   - lapse
 - type: ImageObject
   title: All Things Ukulele
+  slug: all-things-ukulele # TODO s/b implicit
   date: '2016-10-30'
   image: './all-things-ukulele/hero.jpg'
   keywords:
@@ -64,6 +73,7 @@
   - cambridge
 - type: VideoObject
   title: Lego Camper Van
+  slug: lego-camper-van # TODO s/b implicit
   date: '2017-01-08'
   image: './lego-camper-van/hero.jpg'
   keywords:

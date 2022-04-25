@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, ReactElement } from "react"
 import { graphql, PageProps } from 'gatsby'
 import styled from "styled-components"
 import VisibilitySensor from 'react-visibility-sensor'
-import { Layout, LinkProperties, pageLinks } from "../components"
+import { Layout, LinkProperties, PortholeLink } from "../components"
 import { useQuery } from "../providers/QueryProvider"
 import { isEqual } from "lodash"
 
@@ -29,7 +29,7 @@ const ListEnd = styled.div`
 `
 
 // Defines the index for a content item.
-type Post = LinkProperties & {
+export type Post = LinkProperties & {
   // gatsby id
   id: string
   // the content type (maps to the rendering component)
@@ -114,14 +114,11 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
             null
           )
           :
-          list.map(item => {
-            const Template = pageLinks[item.component || item.type]
-            return (
-              <Item key={item.id}>
-                <Template {...item} />
-              </Item>
-            )
-          })
+          list.map(item => (
+            <Item key={item.id}>
+              <PortholeLink {...item} />
+            </Item>
+          ))
         }
         <VisibilitySensor intervalDelay={50} onChange={isVisible => setIsVisible(isVisible)}>
           <ListEnd/>
@@ -138,6 +135,7 @@ export const query = graphql`
         id
         type
         title
+        slug
         date
         image {
           childImageSharp {

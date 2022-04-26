@@ -1,4 +1,5 @@
-import React, {ReactNode, useCallback} from 'react'
+import { navigate } from 'gatsby'
+import React from 'react'
 import styled from "styled-components"
 import { useQuery } from '../providers/QueryProvider'
 import Icon from './Icon'
@@ -27,6 +28,10 @@ const Nav = styled.nav`
 
 const NavButtons = styled.div`
   display: flex;
+`
+
+const NavSpacer = styled.div`
+  width: 8px;
 `
 
 const SEARCH_WIDTH = `
@@ -73,24 +78,32 @@ const SearchButton = styled.button`
 `
 
 type LayoutProps = {
-  navbar?: ReactNode
+  // React component(s) to place in the navbar (left hand)
+  navbar?: React.ReactNode
 }
 
 // The main layout component
-const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>) => {
+const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React.ReactElement => {
 
   // the query context
   const {query, setQuery} = useQuery()
+
+  // submitting any search will navigate to the home page
+  const handleSubmit = React.useCallback((event) => {
+    event.preventDefault();
+    navigate("/")
+  }, [])
 
   return (
     <Main>
       <BottomFixed>
         <Nav>
           <NavButtons>{navbar}</NavButtons>
+          <NavSpacer/>
           <NavSearch>
-            <SearchForm>
+            <SearchForm onSubmit={handleSubmit}>
               <SearchInput 
-                type="search" placeholder="Search the content" name="search"
+                type="search" placeholder="Search the content"
                 onChange={event => setQuery(event.target.value)}
                 value={query}
               />

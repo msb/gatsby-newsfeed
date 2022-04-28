@@ -52,13 +52,13 @@
   slug: big-buck-bunny
   date: '2018-01-10'
   image: './big-buck-bunny/hero.jpg'
-  private: false
+  private: true
 - type: VideoObject
-  title: Lego Big Ben (with soundtrack of choice)
+  title: Lego Big Ben (with soundtrack of choice - Private)
   slug: lego-big-ben-with-soundtrack-of-choice # TODO s/b implicit
   date: '2018-01-08'
   image: './lego-big-ben-with-soundtrack-of-choice/hero.jpg'
-  private: false
+  private: true
   keywords:
   - time
   - lapse

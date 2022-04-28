@@ -7,15 +7,20 @@ import Icon from './Icon'
 const Main = styled.main`
   max-width: 1500px;
   margin: auto;
+  background-color: palegoldenrod;
+  /* ensures the background color is applied to the whole height of the viewport */
+  min-height: 100vh;
   /* allows the content to be seen passed the nav bar */
-  margin-bottom: 44px;
+  padding-bottom: 44px;
+  /* hack to apply background color to top of headings */
+  padding-top: 1px;
 `
 
 const BottomFixed = styled.div`
   position: fixed;
   bottom: 8px;
-  left: 8px;
-  right: 8px;
+  left: 0;
+  right: 0;
   z-index: 99;
 `
 
@@ -28,8 +33,10 @@ const Nav = styled.nav`
 
 const NavButtons = styled.div`
   display: flex;
+  padding-left: 8px;
 `
 
+// TODO On the index page (for small screens) the search bar has too much LH padding.
 const NavSpacer = styled.div`
   width: 8px;
 `
@@ -43,6 +50,7 @@ const SEARCH_WIDTH = `
 
 const NavSearch = styled.div`
   ${SEARCH_WIDTH}
+  padding-right: 8px;
 `
 
 const SearchForm = styled.form`
@@ -113,7 +121,7 @@ const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React
             </SearchForm>
           </NavSearch>
         </Nav>
-       </BottomFixed>
+      </BottomFixed>
       {children}
     </Main>
   )

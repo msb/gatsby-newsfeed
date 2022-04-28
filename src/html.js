@@ -1,13 +1,13 @@
 import React from "react"
 import PropTypes from "prop-types"
+import styled from "styled-components"
 
-// TODO tie back to theme
-const customBodyStyle = {
-  "backgroundColor": "palegoldenrod",
-  "margin": 0,
-  "padding": 0,
-  "fontFamily": "Roboto Mono"
-}
+const Body = styled.body`
+  background-color: beige;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto Mono;
+`
 
 export default function HTML(props) {
   return (
@@ -25,7 +25,7 @@ export default function HTML(props) {
         {props.headComponents}
       </head>
       {/* Customised body style */}
-      <body {...props.bodyAttributes} style={customBodyStyle}>
+      <Body {...props.bodyAttributes}>
         {props.preBodyComponents}
         <div
           key={`body`}
@@ -33,7 +33,7 @@ export default function HTML(props) {
           dangerouslySetInnerHTML={{ __html: props.body }}
         />
         {props.postBodyComponents}
-      </body>
+      </Body>
     </html>
   )
 }

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import styled from "styled-components"
 import { useQuery } from '../providers/QueryProvider'
 import Theme, { ThemedPropsBase, spacing } from '../theme'
-import Icon from './Icon'
+import SearchForm from './SearchForm'
 
 const APP_MAX_WIDTH = 1500
 
@@ -50,48 +50,12 @@ const NavSpacer = styled.div<ThemedPropsBase>`
   width: ${spacing}px;
 `
 
-const SEARCH_WIDTH = `
+const NavSearch = styled.div<ThemedPropsBase>`
   width: 300px;
   @media (max-width: 600px) {
     width: 100%;
   }
-`
-
-const NavSearch = styled.div<ThemedPropsBase>`
-  ${SEARCH_WIDTH}
   padding-right: ${spacing}px;
-`
-
-const SearchForm = styled.form`
-  display: flex;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.40);
-`
-
-const SearchInput = styled.input<ThemedPropsBase>`
-  border: none;
-  height: 40px;
-  /* TODO tie back to theme */
-  font-family: "Roboto Mono";
-  padding: 0 ${spacing}px;
-  &:focus{
-    outline: none;
-  }
-  font-size: 1em;
-  ${SEARCH_WIDTH}
-`
-
-const SearchButton = styled.button`
-  background: gray;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    background: #ccc;
-  }
 `
 
 type LayoutProps = {
@@ -116,6 +80,7 @@ const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React
       <Helmet>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'/>
+        {/* remove any margin on the <body> */}
         <style>body&#123;margin:0;&#125;</style>
       </Helmet>
       <Background>
@@ -125,16 +90,11 @@ const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React
               <NavButtons>{navbar}</NavButtons>
               <NavSpacer/>
               <NavSearch>
-                <SearchForm onSubmit={handleSubmit}>
-                  <SearchInput 
-                    type="search" placeholder="Search the content"
-                    onChange={event => setQuery(event.target.value)}
-                    value={query}
-                  />
-                  <SearchButton type="submit">
-                    <Icon>search</Icon>
-                  </SearchButton>
-                </SearchForm>
+                <SearchForm
+                  value={query}
+                  onChange={event => setQuery(event.target.value)}
+                  onSubmit={handleSubmit}
+                />
               </NavSearch>
             </Nav>
           </BottomFixed>

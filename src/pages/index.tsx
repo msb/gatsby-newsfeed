@@ -2,13 +2,14 @@ import React, { useState, useMemo, useEffect, ReactElement } from "react"
 import { graphql, PageProps } from 'gatsby'
 import styled from "styled-components"
 import VisibilitySensor from 'react-visibility-sensor'
-import { Layout, LinkProperties, PortholeLink } from "../components"
 import { useQuery } from "../providers/QueryProvider"
 import { isEqual } from "lodash"
+import { ThemedPropsBase, spacing } from '../theme'
+import { Layout, LinkProperties, PortholeLink } from "../components"
 
-const Item = styled.div`
-  padding-left: 8px;
-  padding-right: 8px;
+const Item = styled.div<ThemedPropsBase>`
+  padding-left: ${spacing}px;
+  padding-right: ${spacing}px;
 `
 
 const Container = styled.div`

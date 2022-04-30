@@ -1,13 +1,14 @@
 import styled from "styled-components"
+import { ThemedPropsBase, spacing } from '../theme'
 
 // Simple component encapsulating styles for a paper component.
-const Paper = styled.div`
+const Paper = styled.div<ThemedPropsBase>`
   border-radius: 4px;
   color: rgba(0, 0, 0, 0.87);
   background-color: #fff;
   box-sizing: border-box;
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
-  padding: 8px;
+  padding: ${spacing}px;
 `
 
 export default Paper

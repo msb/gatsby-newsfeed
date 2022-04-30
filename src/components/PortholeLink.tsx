@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import { Link } from "gatsby";
 import styled from "styled-components"
+import { ThemedPropsBase, spacing } from '../theme'
 import Picture from './Picture';
 
 // The size of the porthole in px.
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
   justify-content:center;
 `
 
-const Porthole = styled.div`
+const Porthole = styled.div<ThemedPropsBase>`
   border: 15px solid #c4d4e0;
   border-radius: ${PORTHOLE_SIZE}px;
   height: ${PORTHOLE_SIZE}px;
@@ -31,7 +32,7 @@ const Porthole = styled.div`
   position: relative;
   overflow: hidden;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.80);
-  margin-top: 8px;
+  margin-top: ${spacing}px;
 `
 
 type StyledLinkProps = {

@@ -2,10 +2,13 @@ import { navigate } from 'gatsby'
 import React from 'react'
 import styled from "styled-components"
 import { useQuery } from '../providers/QueryProvider'
+import Theme, { ThemedPropsBase, spacing } from '../theme'
 import Icon from './Icon'
 
+const APP_MAX_WIDTH = 1500
+
 const Main = styled.main`
-  max-width: 1500px;
+  max-width: ${APP_MAX_WIDTH}px;
   margin: auto;
   background-color: palegoldenrod;
   /* ensures the background color is applied to the whole height of the viewport */
@@ -16,29 +19,29 @@ const Main = styled.main`
   padding-top: 1px;
 `
 
-const BottomFixed = styled.div`
+const BottomFixed = styled.div<ThemedPropsBase>`
   position: fixed;
-  bottom: 8px;
+  bottom: ${spacing}px;
   left: 0;
   right: 0;
   z-index: 99;
 `
 
 const Nav = styled.nav`
-  max-width: 1500px;
+  max-width: ${APP_MAX_WIDTH}px;
   margin: auto;
   display: flex;
   justify-content: space-between;
 `
 
-const NavButtons = styled.div`
+const NavButtons = styled.div<ThemedPropsBase>`
   display: flex;
-  padding-left: 8px;
+  padding-left: ${spacing}px;
 `
 
 // TODO On the index page (for small screens) the search bar has too much LH padding.
-const NavSpacer = styled.div`
-  width: 8px;
+const NavSpacer = styled.div<ThemedPropsBase>`
+  width: ${spacing}px;
 `
 
 const SEARCH_WIDTH = `
@@ -48,9 +51,9 @@ const SEARCH_WIDTH = `
   }
 `
 
-const NavSearch = styled.div`
+const NavSearch = styled.div<ThemedPropsBase>`
   ${SEARCH_WIDTH}
-  padding-right: 8px;
+  padding-right: ${spacing}px;
 `
 
 const SearchForm = styled.form`
@@ -58,12 +61,12 @@ const SearchForm = styled.form`
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.40);
 `
 
-const SearchInput = styled.input`
+const SearchInput = styled.input<ThemedPropsBase>`
   border: none;
   height: 40px;
   /* TODO tie back to theme */
   font-family: "Roboto Mono";
-  padding: 0 8px;
+  padding: 0 ${spacing}px;
   &:focus{
     outline: none;
   }
@@ -103,27 +106,29 @@ const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React
   }, [])
 
   return (
-    <Main>
-      <BottomFixed>
-        <Nav>
-          <NavButtons>{navbar}</NavButtons>
-          <NavSpacer/>
-          <NavSearch>
-            <SearchForm onSubmit={handleSubmit}>
-              <SearchInput 
-                type="search" placeholder="Search the content"
-                onChange={event => setQuery(event.target.value)}
-                value={query}
-              />
-              <SearchButton type="submit">
-                <Icon>search</Icon>
-              </SearchButton>
-            </SearchForm>
-          </NavSearch>
-        </Nav>
-      </BottomFixed>
-      {children}
-    </Main>
+    <Theme>
+      <Main>
+        <BottomFixed>
+          <Nav>
+            <NavButtons>{navbar}</NavButtons>
+            <NavSpacer/>
+            <NavSearch>
+              <SearchForm onSubmit={handleSubmit}>
+                <SearchInput 
+                  type="search" placeholder="Search the content"
+                  onChange={event => setQuery(event.target.value)}
+                  value={query}
+                />
+                <SearchButton type="submit">
+                  <Icon>search</Icon>
+                </SearchButton>
+              </SearchForm>
+            </NavSearch>
+          </Nav>
+        </BottomFixed>
+        {children}
+      </Main>
+    </Theme>
   )
 }
 

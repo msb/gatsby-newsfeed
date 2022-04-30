@@ -1,25 +1,26 @@
 import React, { FC } from 'react'
 import styled from "styled-components"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { ThemedPropsBase, spacing } from '../../theme'
 import { Paper } from '..'
 
 const BREAK_WIDTH = 1200
 
-const Title = styled.h2`
-  margin-left: 8px;
+const Title = styled.h2<ThemedPropsBase>`
+  margin-left: ${spacing}px;
 `
 
-const Container = styled.div`
+const Container = styled.div<ThemedPropsBase>`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
   justify-content: center;
   align-items: flex-start;
-  padding: 8px;
+  padding: ${spacing}px;
 `
 
-type PanelProps = {
+type PanelProps = ThemedPropsBase & {
   // The percentage width of a panel
   width: number
 }
@@ -31,7 +32,7 @@ const makeWidthStyle = (width: number) => (`
 `)
 
 const PanelLeft = styled.div<PanelProps>`
-  margin-bottom: 8px;
+  margin-bottom: ${spacing}px;
   flex-grow: 0;
   ${makeWidthStyle(100)}
   @media (min-width: ${BREAK_WIDTH}px) {
@@ -50,9 +51,9 @@ const PanelRight = styled.div<PanelProps>`
   }
 `
 
-const PanelRightPaper = styled(Paper)`
+const PanelRightPaper = styled(Paper)<ThemedPropsBase>`
   @media (min-width: ${BREAK_WIDTH}px) {
-    margin-left: 8px;
+    margin-left: ${spacing}px;
   }
 `
 

@@ -1,6 +1,7 @@
 import styled from "styled-components"
+import { ThemedPropsBase, spacing } from '../../theme'
 
-type MainImageProps = {
+type MainImageProps = ThemedPropsBase & {
   // The image width
   width: number
 }
@@ -10,7 +11,7 @@ const MainImage = styled.img<MainImageProps>`
   max-width: ${({ width }: MainImageProps) => width}px;
   width: 100%;
   height: auto;
-  margin-right: 8px;
+  margin-right: ${spacing}px;
 `
 
 export default MainImage

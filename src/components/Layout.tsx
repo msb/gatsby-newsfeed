@@ -1,5 +1,6 @@
 import { navigate } from 'gatsby'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import styled from "styled-components"
 import { useQuery } from '../providers/QueryProvider'
 import Theme, { ThemedPropsBase, spacing } from '../theme'
@@ -7,7 +8,12 @@ import Icon from './Icon'
 
 const APP_MAX_WIDTH = 1500
 
+const Background = styled.div`
+  background-color: beige;
+`
+
 const Main = styled.main`
+  font-family: Roboto Mono;
   max-width: ${APP_MAX_WIDTH}px;
   margin: auto;
   background-color: palegoldenrod;
@@ -107,27 +113,34 @@ const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React
 
   return (
     <Theme>
-      <Main>
-        <BottomFixed>
-          <Nav>
-            <NavButtons>{navbar}</NavButtons>
-            <NavSpacer/>
-            <NavSearch>
-              <SearchForm onSubmit={handleSubmit}>
-                <SearchInput 
-                  type="search" placeholder="Search the content"
-                  onChange={event => setQuery(event.target.value)}
-                  value={query}
-                />
-                <SearchButton type="submit">
-                  <Icon>search</Icon>
-                </SearchButton>
-              </SearchForm>
-            </NavSearch>
-          </Nav>
-        </BottomFixed>
-        {children}
-      </Main>
+      <Helmet>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'/>
+        <style>body&#123;margin:0;&#125;</style>
+      </Helmet>
+      <Background>
+        <Main>
+          <BottomFixed>
+            <Nav>
+              <NavButtons>{navbar}</NavButtons>
+              <NavSpacer/>
+              <NavSearch>
+                <SearchForm onSubmit={handleSubmit}>
+                  <SearchInput 
+                    type="search" placeholder="Search the content"
+                    onChange={event => setQuery(event.target.value)}
+                    value={query}
+                  />
+                  <SearchButton type="submit">
+                    <Icon>search</Icon>
+                  </SearchButton>
+                </SearchForm>
+              </NavSearch>
+            </Nav>
+          </BottomFixed>
+          {children}
+        </Main>
+      </Background>
     </Theme>
   )
 }

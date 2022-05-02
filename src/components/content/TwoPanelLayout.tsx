@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { ThemedPropsBase, spacing } from '../../theme'
 import { Paper } from '..'
+import { MdxComponentProps } from '.'
 
 const BREAK_WIDTH = 1200
 
@@ -57,11 +58,7 @@ const PanelRightPaper = styled(Paper)<ThemedPropsBase>`
   }
 `
 
-export type TwoPanelLayoutProps = {
-  // The page's title.
-  title: string
-  // The MDX text content.
-  body: string,
+export type TwoPanelLayoutProps = MdxComponentProps & {
   // The width ratio of the left hand panel.
   leftWidthRatio?: number
 }

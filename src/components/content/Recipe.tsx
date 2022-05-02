@@ -1,24 +1,11 @@
 import React, { FC, ReactElement } from 'react'
-import { IGatsbyImageData  } from 'gatsby-plugin-image'
 import { Picture } from '..'
 import TwoPanelLayout from './TwoPanelLayout'
 import MainImage from './MainImage'
-
-export type RecipeProps = {
-  // The content's title
-  title: string
-  // The content's main image data
-  image: {
-    childImageSharp: {
-      gatsbyImageData: IGatsbyImageData
-    }
-  }
-  // The content's text data
-  body: string,
-}
+import { ImageObjectProps } from './ImageObject'
 
 // A component that renders recipe content.
-const Recipe: FC<RecipeProps> = (
+const Recipe: FC<ImageObjectProps> = (
   { body, image: { childImageSharp: { gatsbyImageData: { images, width } } }, title }
 ): ReactElement => (
   <TwoPanelLayout title={title} body={body} >

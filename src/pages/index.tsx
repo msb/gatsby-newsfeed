@@ -5,7 +5,7 @@ import VisibilitySensor from 'react-visibility-sensor'
 import { useQuery } from "../providers/QueryProvider"
 import { isEqual } from "lodash"
 import { ThemedPropsBase, spacing } from '../theme'
-import { Layout, LinkProperties, PortholeLink } from "../components"
+import { Layout, LinkProps, PortholeLink } from "../components"
 
 const Item = styled.div<ThemedPropsBase>`
   padding-left: ${spacing}px;
@@ -29,15 +29,18 @@ const ListEnd = styled.div`
   }
 `
 
-// Defines the index for a content item.
-export type Post = LinkProperties & {
-  // gatsby id
-  id: string
+export type BasePost = {
   // the content type (maps to the rendering component)
   type: string
   // The name of the component rendering the content.
   // Only supplied if it's different from the `type`
   component?: string
+} 
+
+// Defines the index for a content item.
+export type Post = BasePost & LinkProps & {
+  // gatsby id
+  id: string
   // A list keywords to aid searching the content.
   keywords: string[]
 } 

@@ -3,18 +3,15 @@ import { IGatsbyImageData  } from 'gatsby-plugin-image'
 import { Picture } from '..'
 import TwoPanelLayout from './TwoPanelLayout'
 import MainImage from './MainImage'
+import { MdxComponentProps } from '.'
 
-export type ImageObjectProps = {
-  // The content's title
-  title: string
+export type ImageObjectProps = MdxComponentProps & {
   // The content's main image data
   image: {
     childImageSharp: {
       gatsbyImageData: IGatsbyImageData
     }
   }
-  // The content's text data
-  body: string,
 }
 
 // A component that renders image object content.

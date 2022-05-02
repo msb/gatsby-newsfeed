@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import styled from "styled-components"
 import { graphql, PageProps, Link } from 'gatsby'
-import { Post } from '.'
 import { Icon, Layout } from '../components'
-import { ImageObject, Recipe } from '../components/content'
+import registry from '../components/content/registry'
+import { BasePost } from '.'
 
 const IconLink = styled(Link)`
   background-color: gray;
@@ -24,35 +24,23 @@ const IconLink = styled(Link)`
 
 type DataProps = {
   mdx: {
-    frontmatter: Post
+    // The MDX frontmatter (we only type the field sufficiently for resolving the component)
+    frontmatter: BasePost
+    // The MDX content
     body: string
   }
-}
-
-// Select the component to render the content based on the `component` or `type` fields defined in
-// the frontmatter.
-// TODO I think we can do better than an if statement - maybe some kind of content component
-// registry.
-const selectComponent = (post: Post, body: string): ReactElement => {
-  const component = post.component || post.type
-  if (component === 'Recipe') {
-    return <Recipe {...{...post, body}} />
-  } else if (component === 'ImageObject') {
-    return <ImageObject {...{...post, body}} />
-  }
-
-  throw `${component} content isn't recognised`
 }
 
 // A newfeed page that renders all content sourced from MDX nodes. The content is rendered by
 // different `content` components depending the `type` defined in the frontmatter.
 const MdxContent = (
   { data: { mdx: { body, frontmatter } } }: PageProps<DataProps>
-): ReactElement => (
-  <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
-    { selectComponent(frontmatter, body) }
+): ReactElement => {
+  const Component = registry.get(frontmatter.component || frontmatter.type)
+  return <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
+    { <Component {...{...frontmatter, body}} /> }
   </Layout>
-)
+}
 
 export const query = graphql`
   query ($id: String) {

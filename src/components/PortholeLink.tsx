@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { IGatsbyImageData } from 'gatsby-plugin-image'
-import { Link } from "gatsby";
+import React, { useState } from 'react'
+import { Link } from "gatsby"
 import styled from "styled-components"
 import { ThemedPropsBase, spacing } from '../theme'
-import Picture from './Picture';
+import Picture from './Picture'
+import { LinkProps } from '.'
 
 // The size of the porthole in px.
-const PORTHOLE_SIZE = 200;
+const PORTHOLE_SIZE = 200
 // The hover size of the image in px.
-const HOVER_SIZE = PORTHOLE_SIZE + 40;
+const HOVER_SIZE = PORTHOLE_SIZE + 40
 
 const Title = styled.div`
   display:flex;
@@ -69,26 +69,10 @@ const LinkImage = styled.img`
   transition: opacity 0.4s;
 `
 
-// TODO doesn't belong here as PortholeLink is a specific instance of a page link.
-export type LinkProperties = {
-  // the link's title
-  title: string
-  // the slug (used to link to the content page)
-  slug: string
-  // the date the content was published (TODO show this somewhere)
-  date: Date
-  // the link's image data (Gatsby specific)
-  image: {
-    childImageSharp: {
-      gatsbyImageData: IGatsbyImageData
-    }
-  }
-}
-
 // Based closely on https://codepen.io/mackorichardson/pen/prJyq, this component renders a page
 // link styled as a porthole with an image framed in the porthole. The hover event causes the image
 // to zoom slightly.
-const PortholeLink:React.FC<LinkProperties> = ({ title, slug, image: { childImageSharp } }) => {
+const PortholeLink:React.FC<LinkProps> = ({ title, slug, image: { childImageSharp } }) => {
 
   const { gatsbyImageData: {images, width, height} } = childImageSharp
 
@@ -112,4 +96,4 @@ const PortholeLink:React.FC<LinkProperties> = ({ title, slug, image: { childImag
   </>
 }
 
-export default PortholeLink;
+export default PortholeLink

@@ -22,6 +22,11 @@ const config: GatsbyConfig = {
     "gatsby-transformer-sharp",
     "gatsby-plugin-mdx",
   ],
+  // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/#mapping-node-types
+  mapping: {
+    // Allows the publicUrl of a file resource to be used.
+    "mdx.frontmatter.file": `File.base`,
+  },
 }
 
 export default config

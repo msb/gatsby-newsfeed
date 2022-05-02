@@ -54,6 +54,11 @@ export const query = graphql`
             gatsbyImageData
           }
         }
+        embedUrl
+        file {
+          publicURL
+        }
+        aspectRatio
       }
       body
     }

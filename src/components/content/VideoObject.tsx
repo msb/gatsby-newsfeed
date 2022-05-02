@@ -19,13 +19,17 @@ const Iframe = styled.iframe`
   height: 100%; 
 `
 
-export type VideoObjectObjectProps = MdxComponentProps & {
-  // The url of an external video resource (either embedUrl or file must be given).
-  embedUrl: null | string
-  // A static video resource with it's public URL (either embedUrl or file must be given).
-  file: null | {
-    publicURL: string    
-  }
+export type VideoObjectObjectProps = MdxComponentProps & ({
+  // A static video resource with it's public URL
+  file: { publicURL: string }
+  // null if `file` is set
+  embedUrl: null
+} | {
+  // The url of an external video resource
+  embedUrl: string
+  // null if `embedUrl` is set
+  file: null
+}) & {
   // The aspect ratio to be applied to the video (if any)
   aspectRatio?: string
 }

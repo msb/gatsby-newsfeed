@@ -37,7 +37,7 @@ const Porthole = styled.div<ThemedPropsBase>`
 
 type StyledLinkProps = {
   // the width to height ratio of the contained image
-  ratio: number
+  $widthHeightRatio: number
 }
 
 // This styled <Link> sizes itself based on it's contained image's `ratio` and the
@@ -50,20 +50,20 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   z-index: 90;
   transition: all 0.2s ease-in-out;
 
-  width: ${({ratio}) => PORTHOLE_SIZE * ratio}px;
+  width: ${({$widthHeightRatio}) => PORTHOLE_SIZE * $widthHeightRatio}px;
   height: ${PORTHOLE_SIZE}px;
   top: 0px;
-  left: ${({ratio}) => - (PORTHOLE_SIZE * ratio - PORTHOLE_SIZE) / 2}px;
+  left: ${({$widthHeightRatio}) => - (PORTHOLE_SIZE * $widthHeightRatio - PORTHOLE_SIZE) / 2}px;
 
   &:hover {
-    width: ${({ratio}) => HOVER_SIZE * ratio}px;
+    width: ${({$widthHeightRatio}) => HOVER_SIZE * $widthHeightRatio}px;
     height: ${HOVER_SIZE}px;
     top: ${- (HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
-    left: ${({ratio}) => - (ratio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
+    left: ${({$widthHeightRatio}) => - ($widthHeightRatio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
   }
 `
 
-const LinkImage = styled.img`
+const LinkImage = styled.img.attrs({decoding: "async"})`
   width: 100%;
   height: 100%;
   transition: opacity 0.4s;
@@ -81,9 +81,9 @@ const PortholeLink:React.FC<LinkProps> = ({ title, slug, image: { childImageShar
   return <>
     <Wrapper>
       <Porthole>
-        <StyledLink to={ slug } ratio={width / height}>
+        <StyledLink to={ slug } $widthHeightRatio={width / height}>
           <Picture sources={images.sources}>
-            <LinkImage decoding="async" {...images.fallback} alt={title}
+            <LinkImage {...images.fallback} alt={title}
               onLoad={() => setOpacity(1)} style={{opacity}}
             />
           </Picture>

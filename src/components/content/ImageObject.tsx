@@ -19,7 +19,7 @@ const ImageObject: FC<ImageObjectProps> = (
   { body, image: { childImageSharp: { gatsbyImageData: { images, width } } }, title }
 ): ReactElement => (<TwoPanelLayout title={title} body={body} leftWidthRatio={0.65} >
     <Picture sources={images.sources}>
-      <MainImage decoding="async" {...images.fallback} alt={title} width={width} />
+      <MainImage {...images.fallback} alt={title} $width={width} />
     </Picture>
   </TwoPanelLayout>
 )

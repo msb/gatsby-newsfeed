@@ -8,7 +8,10 @@ const Form = styled.form`
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.40);
 `
 
-const Input = styled.input<ThemedPropsBase>`
+const Input = styled.input.attrs({
+  type: "search",
+  placeholder: "Search the content"
+})<ThemedPropsBase>`
   border: none;
   height: 40px;
   font-family: "Roboto Mono";
@@ -46,10 +49,7 @@ type SearchFormProps = {
 // A component combining a styled search input and form.
 const SearchForm: FC<SearchFormProps> = ({value, onSubmit, onChange}) => (
   <Form onSubmit={onSubmit}>
-    <Input 
-      type="search" placeholder="Search the content"
-      onChange={onChange} value={value}
-    />
+    <Input onChange={onChange} value={value}/>
     <Button type="submit">
       <Icon>search</Icon>
     </Button>

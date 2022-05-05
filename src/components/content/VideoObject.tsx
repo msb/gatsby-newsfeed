@@ -6,15 +6,15 @@ import { MdxComponentProps } from '.'
 
 type WrapperProps = {
   // The aspect ratio to be applied to the video.
-  aspect: string
+  $aspectRatio: string
 }
 
 const Wrapper = styled.div<WrapperProps>`
   width: 100%;
-  aspect-ratio: ${({ aspect }) => aspect || "16 / 9"};
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio || "16 / 9"};
 `
 
-const Iframe = styled.iframe`
+const Iframe = styled.iframe.attrs({frameBorder: 0, allowFullScreen: true})`
   width: 100%;
   height: 100%; 
 `
@@ -40,12 +40,12 @@ const VideoObject: FC<VideoObjectObjectProps> = (
 ): ReactElement => {
   const url = (embedUrl || file?.publicURL) as string
   return <TwoPanelLayout title={title} body={body} leftWidthRatio={0.65} >
-    <Wrapper aspect={aspectRatio}>
+    <Wrapper $aspectRatio={aspectRatio}>
       {
         url.includes("drive.google.com")
         ?
         /* TODO: Investigate the possibility of `react-player` embedding Google Drive videos. */
-        <Iframe title={title} src={url} frameBorder={0} allowFullScreen />
+        <Iframe title={title} src={url} />
         :
         <ReactPlayer url={url} controls={true} width="100%" height="100%"/>
       }

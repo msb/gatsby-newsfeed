@@ -10,7 +10,7 @@ const Recipe: FC<ImageObjectProps> = (
 ): ReactElement => (
   <TwoPanelLayout title={title} body={body} >
     <Picture sources={images.sources}>
-      <MainImage decoding="async" {...images.fallback} alt={title} width={width} />
+      <MainImage {...images.fallback} alt={title} $width={width} />
     </Picture>
   </TwoPanelLayout>
 )

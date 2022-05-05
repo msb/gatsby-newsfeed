@@ -23,7 +23,7 @@ const Container = styled.div<ThemedPropsBase>`
 
 type PanelProps = ThemedPropsBase & {
   // The percentage width of a panel
-  width: number
+  $width: number
 }
 
 // creates common width style
@@ -37,7 +37,7 @@ const PanelLeft = styled.div<PanelProps>`
   flex-grow: 0;
   ${makeWidthStyle(100)}
   @media (min-width: ${BREAK_WIDTH}px) {
-    ${({ width }: PanelProps) => makeWidthStyle(width)}
+    ${({ $width }: PanelProps) => makeWidthStyle($width)}
     justify-content: space-between;
   }
   display: flex;
@@ -48,7 +48,7 @@ const PanelRight = styled.div<PanelProps>`
   flex-grow: 0;
   ${makeWidthStyle(100)}
   @media (min-width: ${BREAK_WIDTH}px) {
-    ${({ width }: PanelProps) => makeWidthStyle(width)}
+    ${({ $width }: PanelProps) => makeWidthStyle($width)}
   }
 `
 
@@ -71,8 +71,8 @@ const TwoPanelLayout: FC<TwoPanelLayoutProps> = (
   <>
     <Title>{ title }</Title>
     <Container>
-      <PanelLeft width={leftWidthRatio * 100}>{ children }</PanelLeft>
-      <PanelRight width={(1 - leftWidthRatio) * 100}>
+      <PanelLeft $width={leftWidthRatio * 100}>{ children }</PanelLeft>
+      <PanelRight $width={(1 - leftWidthRatio) * 100}>
         <PanelRightPaper>
           <MDXRenderer>{ body }</MDXRenderer>
         </PanelRightPaper>

@@ -2,14 +2,10 @@ import React, { FC } from 'react'
 import styled from "styled-components"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { ThemedPropsBase, spacing } from '../../theme'
-import { Paper } from '..'
+import { Paper, Title } from '..'
 import { MdxComponentProps } from '.'
 
 const BREAK_WIDTH = 1200
-
-const Title = styled.h2<ThemedPropsBase>`
-  margin-left: ${spacing}px;
-`
 
 const Container = styled.div<ThemedPropsBase>`
   width: 100%;

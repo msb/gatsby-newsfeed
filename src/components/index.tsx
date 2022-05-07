@@ -3,6 +3,8 @@ import Icon from './Icon'
 import Layout from './Layout'
 import Paper from './Paper'
 import Picture from './Picture'
+import PortholeLink from './PortholeLink'
+import Title from './Title'
 
 // The properties of an index page image link component.
 type LinkProps = {
@@ -20,7 +22,5 @@ type LinkProps = {
   }
 }
 
-import PortholeLink from './PortholeLink'
-
 export type { LinkProps }
-export { Icon, Layout, PortholeLink, Paper, Picture }
+export { Icon, Layout, PortholeLink, Paper, Picture, Title }

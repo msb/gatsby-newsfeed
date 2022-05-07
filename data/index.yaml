@@ -1,5 +1,14 @@
 # TODO this will be replaced with a custom transformer
 ---
+- type: Table
+  component: Table # TODO s/b implicit
+  title: A table of the first ten elements
+  slug: 10-elements
+  date: '2022-05-02'
+  image: './images/Table.jpg'
+  keywords:
+  - list
+  - example
 - type: TextDigitalDocument
   title: Romeo & Juliet
   slug: romeo-juliet # TODO s/b implicit

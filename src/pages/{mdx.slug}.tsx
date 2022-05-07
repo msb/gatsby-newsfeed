@@ -49,16 +49,24 @@ export const query = graphql`
         title
         component
         type
+        # ImageObject, Recipe
         image {
           childImageSharp {
             gatsbyImageData
           }
         }
+        # VideoObject
         embedUrl
         file {
           publicURL
         }
         aspectRatio
+        # Table
+        headers
+        widths
+        data
+        maxWidth
+        breakWidth
       }
       body
     }

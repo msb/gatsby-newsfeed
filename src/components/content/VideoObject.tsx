@@ -19,7 +19,7 @@ const Iframe = styled.iframe.attrs({frameBorder: 0, allowFullScreen: true})`
   height: 100%; 
 `
 
-export type VideoObjectObjectProps = MdxComponentProps & ({
+export type VideoObjectProps = MdxComponentProps & ({
   // A static video resource with it's public URL
   file: { publicURL: string }
   // null if `file` is set
@@ -35,7 +35,7 @@ export type VideoObjectObjectProps = MdxComponentProps & ({
 }
 
 // A component that renders video object content.
-const VideoObject: FC<VideoObjectObjectProps> = (
+const VideoObject: FC<VideoObjectProps> = (
   { title, body, embedUrl, file, aspectRatio = "16 / 9"}
 ): ReactElement => {
   const url = (embedUrl || file?.publicURL) as string

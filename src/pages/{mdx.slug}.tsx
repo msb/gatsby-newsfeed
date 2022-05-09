@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styled from "styled-components"
+import styled from 'styled-components'
 import { graphql, PageProps, Link } from 'gatsby'
 import { Icon, Layout } from '../components'
 import registry from '../components/content/registry'
@@ -34,12 +34,14 @@ type DataProps = {
 // A newfeed page that renders all content sourced from MDX nodes. The content is rendered by
 // different `content` components depending the `type` defined in the frontmatter.
 const MdxContent = (
-  { data: { mdx: { body, frontmatter } } }: PageProps<DataProps>
+  { data: { mdx: { body, frontmatter } } }: PageProps<DataProps>,
 ): ReactElement => {
   const Component = registry.get(frontmatter.component || frontmatter.type)
-  return <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
-    { <Component {...{...frontmatter, body}} /> }
-  </Layout>
+  return (
+    <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
+      <Component {...{ ...frontmatter, body }} />
+    </Layout>
+  )
 }
 
 export const query = graphql`

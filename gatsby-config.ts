@@ -1,31 +1,31 @@
-import type { GatsbyConfig } from "gatsby"
-import path from "path"
+import type { GatsbyConfig } from 'gatsby'
+import path from 'path'
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `Gatsby News Feed`,
-    siteUrl: `https://www.yourdomain.tld`,
+    title: 'Gatsby News Feed',
+    siteUrl: 'https://www.yourdomain.tld',
   },
   plugins: [
-    "gatsby-plugin-styled-components",
-    "gatsby-plugin-layout",
+    'gatsby-plugin-styled-components',
+    'gatsby-plugin-layout',
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: `data`,
-        path: path.resolve(`data`),
+        name: 'data',
+        path: path.resolve('data'),
       },
     },
-    "gatsby-plugin-image",
-    "gatsby-plugin-sharp",
-    "gatsby-transformer-yaml",
-    "gatsby-transformer-sharp",
-    "gatsby-plugin-mdx",
+    'gatsby-plugin-image',
+    'gatsby-plugin-sharp',
+    'gatsby-transformer-yaml',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-mdx',
   ],
   // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/#mapping-node-types
   mapping: {
     // Allows the publicUrl of a file resource to be used.
-    "mdx.frontmatter.file": `File.base`,
+    'mdx.frontmatter.file': 'File.base',
   },
 }
 

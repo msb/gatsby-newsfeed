@@ -7,15 +7,17 @@ module.exports = {
     'airbnb',
   ],
   rules: {
-    'semi': 'off',
-    'linebreak-style': 'off',
-    'react/jsx-filename-extension': [2, { 'extensions': ['.ts', '.tsx'] }],
+    'react/jsx-filename-extension': [2, { extensions: ['.ts', '.tsx'] }],
+    'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
     'react/jsx-props-no-spreading': 'off',
-    'import/extensions': ['error', 'ignorePackages', { 'ts': 'never', 'tsx': 'never' }],
-    // TODO this might be a good idea
-    'react/function-component-definition': 'off',
     // don't see the point of this when you can ES6 defaults
     'react/require-default-props': 'off',
+    // no need for this
+    'linebreak-style': 'off',
+    // disabled on 1st pass
+    'react/function-component-definition': 'off',
+    // disabled on 1st pass
+    semi: 'off',
   },
   settings: {
     react: {
@@ -23,8 +25,8 @@ module.exports = {
     },
     'import/resolver': {
       node: {
-          extensions: ['.ts', '.tsx'],
-          moduleDirectory: ['node_modules', 'src/'],
+        extensions: ['.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'src/'],
       },
     },
   },

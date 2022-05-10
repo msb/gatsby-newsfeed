@@ -1,7 +1,7 @@
 import { navigate } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import styled from "styled-components"
+import styled from 'styled-components'
 import { useQuery } from '../providers/QueryProvider'
 import Theme, { ThemedPropsBase, spacing } from '../theme'
 import SearchForm from './SearchForm'
@@ -64,22 +64,21 @@ type LayoutProps = {
 }
 
 // The main layout component
-const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React.ReactElement => {
-
+const Layout = ({ navbar, children }: React.PropsWithChildren<LayoutProps>): React.ReactElement => {
   // the query context
-  const {query, setQuery} = useQuery()
+  const { query, setQuery } = useQuery()
 
   // submitting any search will navigate to the home page
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
-    navigate("/")
+    navigate('/')
   }, [])
 
   return (
     <Theme>
       <Helmet>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel="stylesheet" />
         {/* remove any margin on the <body> */}
         <style>body&#123;margin:0;&#125;</style>
       </Helmet>
@@ -88,11 +87,11 @@ const Layout = ({navbar, children}: React.PropsWithChildren<LayoutProps>): React
           <BottomFixed>
             <Nav>
               <NavButtons>{navbar}</NavButtons>
-              <NavSpacer/>
+              <NavSpacer />
               <NavSearch>
                 <SearchForm
                   value={query}
-                  onChange={event => setQuery(event.target.value)}
+                  onChange={(event) => setQuery(event.target.value)}
                   onSubmit={handleSubmit}
                 />
               </NavSearch>

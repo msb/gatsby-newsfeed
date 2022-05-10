@@ -74,7 +74,6 @@ const LinkImage = styled.img.attrs({ decoding: 'async' })`
 // to zoom slightly.
 const PortholeLink:React.FC<LinkProps> = ({ title, slug, image: { childImageSharp } }) => {
   const { gatsbyImageData: { images, width, height } } = childImageSharp
-
   const [opacity, setOpacity] = useState(0)
 
   return (

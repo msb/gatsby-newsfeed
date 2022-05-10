@@ -7,17 +7,19 @@ module.exports = {
     'airbnb',
   ],
   rules: {
-    'react/jsx-filename-extension': [2, { extensions: ['.ts', '.tsx'] }],
-    'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
+    'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
+    // too useful
     'react/jsx-props-no-spreading': 'off',
     // don't see the point of this when you can ES6 defaults
     'react/require-default-props': 'off',
-    // no need for this
+    // no benefit to this
     'linebreak-style': 'off',
     // disabled on 1st pass
     'react/function-component-definition': 'off',
     // disabled on 1st pass
     semi: 'off',
+    // disabled on 1st pass
+    'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
   },
   settings: {
     react: {

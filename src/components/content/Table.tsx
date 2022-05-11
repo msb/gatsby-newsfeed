@@ -24,7 +24,7 @@ const Container = styled.div<ContainerProps>`
 
   @media (max-width: ${breakWidth}px) {
     border: 0;
-    /* this is the max size of a one column table
+    /* this is the max size of a one column table */
     max-width: 800px;
   }
 `

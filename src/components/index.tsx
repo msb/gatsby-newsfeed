@@ -23,4 +23,6 @@ type LinkProps = {
 }
 
 export type { LinkProps }
-export { Icon, Layout, PortholeLink, Paper, Picture, Title }
+export {
+  Icon, Layout, PortholeLink, Paper, Picture, Title,
+}

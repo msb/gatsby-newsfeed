@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react'
-import styled from "styled-components"
+import styled from 'styled-components'
 import ReactPlayer from 'react-player'
 import TwoPanelLayout from './TwoPanelLayout'
 import { MdxComponentProps } from '.'
@@ -11,10 +11,10 @@ type WrapperProps = {
 
 const Wrapper = styled.div<WrapperProps>`
   width: 100%;
-  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio || "16 / 9"};
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio || '16 / 9'};
 `
 
-const Iframe = styled.iframe.attrs({frameBorder: 0, allowFullScreen: true})`
+const Iframe = styled.iframe.attrs({ frameBorder: 0, allowFullScreen: true })`
   width: 100%;
   height: 100%; 
 `
@@ -31,26 +31,28 @@ export type VideoObjectProps = MdxComponentProps & ({
   file: null
 }) & {
   // The aspect ratio to be applied to the video (if any)
-  aspectRatio?: string
+  aspectRatio: string
 }
 
 // A component that renders video object content.
-const VideoObject: FC<VideoObjectProps> = (
-  { title, body, embedUrl, file, aspectRatio = "16 / 9"}
-): ReactElement => {
+const VideoObject: FC<VideoObjectProps> = ({
+  title, body, embedUrl, file, aspectRatio = '16 / 9',
+}): ReactElement => {
   const url = (embedUrl || file?.publicURL) as string
-  return <TwoPanelLayout title={title} body={body} leftWidthRatio={0.65} >
-    <Wrapper $aspectRatio={aspectRatio}>
-      {
-        url.includes("drive.google.com")
-        ?
-        /* TODO: Investigate the possibility of `react-player` embedding Google Drive videos. */
-        <Iframe title={title} src={url} />
-        :
-        <ReactPlayer url={url} controls={true} width="100%" height="100%"/>
-      }
-    </Wrapper>
-  </TwoPanelLayout>
+  return (
+    <TwoPanelLayout title={title} body={body} leftWidthRatio={0.65}>
+      <Wrapper $aspectRatio={aspectRatio}>
+        {
+          url.includes('drive.google.com') ? (
+            // TODO: Investigate the possibility of `react-player` embedding Google Drive videos.
+            <Iframe title={title} src={url} />
+          ) : (
+            <ReactPlayer url={url} controls width="100%" height="100%" />
+          )
+        }
+      </Wrapper>
+    </TwoPanelLayout>
+  )
 }
 
 export default VideoObject

@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 import { ThemedPropsBase, spacing } from '../theme'
 
 // Simple component encapsulating styles for a paper component.

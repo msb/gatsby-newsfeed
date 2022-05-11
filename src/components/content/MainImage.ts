@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 import { ThemedPropsBase, spacing } from '../../theme'
 
 type MainImageProps = ThemedPropsBase & {
@@ -7,7 +7,7 @@ type MainImageProps = ThemedPropsBase & {
 }
 
 // Styled image to use as the main image in a content component.
-const MainImage = styled.img.attrs({decoding: "async"})<MainImageProps>`
+const MainImage = styled.img.attrs({ decoding: 'async' })<MainImageProps>`
   max-width: ${({ $width }: MainImageProps) => $width}px;
   width: 100%;
   height: auto;

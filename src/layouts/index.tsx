@@ -3,7 +3,7 @@ import QueryProvider from '../providers/QueryProvider';
 
 // This layout is used by "gatsby-plugin-layout" and exists purely to persist context over
 // different pages.
-const ContextLayout: FC = ({children}) => (
+const ContextLayout: FC = ({ children }) => (
   <QueryProvider>{children}</QueryProvider>
 )
 

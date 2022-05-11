@@ -1,6 +1,4 @@
-import styled from "styled-components"
-
-/* https://developers.google.com/fonts/docs/material_icons */
+import styled from 'styled-components'
 
 type IconProps = {
   // size of the icon font in px
@@ -8,6 +6,7 @@ type IconProps = {
 }
 
 // Simple component encapsulating styles for the material icons font.
+// https://developers.google.com/fonts/docs/material_icons
 const Icon = styled.i<IconProps>`
   font-family: 'Material Icons';
   font-weight: normal;

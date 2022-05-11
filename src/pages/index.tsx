@@ -1,11 +1,13 @@
-import React, { useState, useMemo, useEffect, ReactElement } from "react"
+import React, {
+  useState, useMemo, useEffect, ReactElement,
+} from 'react'
 import { graphql, PageProps } from 'gatsby'
-import styled from "styled-components"
+import styled from 'styled-components'
 import VisibilitySensor from 'react-visibility-sensor'
-import { useQuery } from "../providers/QueryProvider"
-import { isEqual } from "lodash"
+import { isEqual } from 'lodash'
+import { useQuery } from '../providers/QueryProvider'
 import { ThemedPropsBase, spacing } from '../theme'
-import { Layout, LinkProps, PortholeLink } from "../components"
+import { Layout, LinkProps, PortholeLink } from '../components'
 
 const Item = styled.div<ThemedPropsBase>`
   padding-left: ${spacing}px;
@@ -35,7 +37,7 @@ export type BasePost = {
   // The name of the component rendering the content.
   // Only supplied if it's different from the `type`
   component?: string
-} 
+}
 
 // Defines the index for a content item.
 export type Post = BasePost & LinkProps & {
@@ -43,7 +45,7 @@ export type Post = BasePost & LinkProps & {
   id: string
   // A list keywords to aid searching the content.
   keywords: string[]
-} 
+}
 
 type DataProps = {
   allIndexYaml: {
@@ -58,14 +60,27 @@ const PAGE_DELAY = 100
 // The number of the 1st page.
 const STARTING_PAGE = 1
 
+// Displayed when no items are found for the query
+const NoResults = ({ query }: { query: string }): ReactElement | null => (
+  query ? (
+    <h3>
+      Nothing found for
+      &apos;
+      { query }
+      &apos;
+    </h3>
+  ) : null
+)
+
 // The newsfeed's home page - renders a list of page links ordered by date published.
 // For efficiency, the only the potion of the list visible on the viewport is rendered.
 // More of the list is rendered as the page is scrolled down. The page also filters
 // content based on the query context.
-const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<DataProps>): ReactElement => {
-
+const IndexPage = (
+  { data: { allIndexYaml: { nodes: fullList } } }: PageProps<DataProps>,
+): ReactElement => {
   // the query context
-  const {query} = useQuery()
+  const { query } = useQuery()
 
   // whether or not <ListEnd> is visible
   const [isVisible, setIsVisible] = useState(true)
@@ -77,18 +92,16 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
   const [page, setPage] = useState(STARTING_PAGE)
 
   const filteredList = useMemo(() => (
-    fullList.filter(item => {
+    fullList.filter((item) => {
       const tags = item.keywords || [];
       const textToSearch = [item.title, item.type, ...tags];
-      return textToSearch.find(
-        text => text.toLowerCase().indexOf(query.toLowerCase()) !== -1
-      )
+      return textToSearch.find((text) => text.toLowerCase().indexOf(query.toLowerCase()) !== -1)
     })
   ), [query, fullList])
 
   useEffect(() => {
     if (isVisible || page === 1) {
-      if (!isEqual(list.map(item => item.id), filteredList.map(item => item.id))) {
+      if (!isEqual(list.map((item) => item.id), filteredList.map((item) => item.id))) {
         // I have found that this delay is required when using `<VisibilitySensor>`.
         // Otherwise it doesn't get a change to change it's state.
         setTimeout(() => {
@@ -106,26 +119,16 @@ const IndexPage = ({ data: { allIndexYaml: { nodes: fullList } } }: PageProps<Da
     <Layout>
       <Container>
         {
-          filteredList.length === 0
-          ?
-          (
-            query
-            ?
-            <h3>
-              Nothing found for &apos;{ query }&apos;
-            </h3>
-            :
-            null
+          filteredList.length === 0 ? <NoResults query={query} /> : (
+            list.map((item) => (
+              <Item key={item.id}>
+                <PortholeLink {...item} />
+              </Item>
+            ))
           )
-          :
-          list.map(item => (
-            <Item key={item.id}>
-              <PortholeLink {...item} />
-            </Item>
-          ))
         }
-        <VisibilitySensor intervalDelay={50} onChange={isVisible => setIsVisible(isVisible)}>
-          <ListEnd/>
+        <VisibilitySensor intervalDelay={50} onChange={setIsVisible}>
+          <ListEnd />
         </VisibilitySensor>
       </Container>
     </Layout>

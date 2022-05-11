@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { ThemeProvider } from "styled-components"
+import { ThemeProvider } from 'styled-components'
 
 type AppTheme = {
   spacing: number
@@ -19,7 +19,7 @@ const Theme = ({ children }: { children: ReactNode }): ReactElement => (
 )
 
 // Helper function to give a theme's spacing
-const spacing = ({ theme }: ThemedPropsBase): number => theme.spacing
+const spacing = (props: ThemedPropsBase): number => props.theme.spacing
 
 export type { AppTheme, ThemedPropsBase }
 export { spacing }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from "gatsby"
-import styled from "styled-components"
+import { Link } from 'gatsby'
+import styled from 'styled-components'
 import { ThemedPropsBase, spacing } from '../theme'
 import Picture from './Picture'
 import { LinkProps } from '.'
@@ -50,20 +50,20 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   z-index: 90;
   transition: all 0.2s ease-in-out;
 
-  width: ${({$widthHeightRatio}) => PORTHOLE_SIZE * $widthHeightRatio}px;
+  width: ${({ $widthHeightRatio }) => PORTHOLE_SIZE * $widthHeightRatio}px;
   height: ${PORTHOLE_SIZE}px;
   top: 0px;
-  left: ${({$widthHeightRatio}) => - (PORTHOLE_SIZE * $widthHeightRatio - PORTHOLE_SIZE) / 2}px;
+  left: ${({ $widthHeightRatio }) => -(PORTHOLE_SIZE * $widthHeightRatio - PORTHOLE_SIZE) / 2}px;
 
   &:hover {
-    width: ${({$widthHeightRatio}) => HOVER_SIZE * $widthHeightRatio}px;
+    width: ${({ $widthHeightRatio }) => HOVER_SIZE * $widthHeightRatio}px;
     height: ${HOVER_SIZE}px;
-    top: ${- (HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
-    left: ${({$widthHeightRatio}) => - ($widthHeightRatio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
+    top: ${-(HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
+    left: ${({ $widthHeightRatio }) => -($widthHeightRatio * HOVER_SIZE - PORTHOLE_SIZE) / 2}px;
   }
 `
 
-const LinkImage = styled.img.attrs({decoding: "async"})`
+const LinkImage = styled.img.attrs({ decoding: 'async' })`
   width: 100%;
   height: 100%;
   transition: opacity 0.4s;
@@ -73,27 +73,30 @@ const LinkImage = styled.img.attrs({decoding: "async"})`
 // link styled as a porthole with an image framed in the porthole. The hover event causes the image
 // to zoom slightly.
 const PortholeLink:React.FC<LinkProps> = ({ title, slug, image: { childImageSharp } }) => {
-
-  const { gatsbyImageData: {images, width, height} } = childImageSharp
-
+  const { gatsbyImageData: { images, width, height } } = childImageSharp
   const [opacity, setOpacity] = useState(0)
 
-  return <>
-    <Wrapper>
-      <Porthole>
-        <StyledLink to={ slug } $widthHeightRatio={width / height}>
-          <Picture sources={images.sources}>
-            <LinkImage {...images.fallback} alt={title}
-              onLoad={() => setOpacity(1)} style={{opacity}}
-            />
-          </Picture>
-        </StyledLink>
-      </Porthole>
-    </Wrapper>
-    <Title>
-      <h3>{ title }</h3>
-    </Title>
-  </>
+  return (
+    <>
+      <Wrapper>
+        <Porthole>
+          <StyledLink to={slug} $widthHeightRatio={width / height}>
+            <Picture sources={images.sources}>
+              <LinkImage
+                {...images.fallback}
+                alt={title}
+                onLoad={() => setOpacity(1)}
+                style={{ opacity }}
+              />
+            </Picture>
+          </StyledLink>
+        </Porthole>
+      </Wrapper>
+      <Title>
+        <h3>{ title }</h3>
+      </Title>
+    </>
+  )
 }
 
 export default PortholeLink

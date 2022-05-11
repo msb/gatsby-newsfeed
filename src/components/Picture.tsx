@@ -1,4 +1,5 @@
-import React from "react"
+import React from 'react'
+// eslint-disable-next-line import/no-unresolved
 import { SourceProps } from 'gatsby-plugin-image/dist/src/components/picture';
 
 export type PictureProps = {
@@ -9,7 +10,7 @@ export type PictureProps = {
 // Simple component that renders a <picture> element along with it's <source> elements.
 const Picture:React.FC<PictureProps> = ({ sources, children }) => (
   <picture>
-    { (sources || []).map((source: SourceProps) => <source key={source.type} {...source}/>) }
+    { (sources || []).map((source: SourceProps) => <source key={source.type} {...source} />) }
     { children }
   </picture>
 )

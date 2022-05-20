@@ -1,3 +1,5 @@
 **/*.
+public/**
+static/pdf.worker.min.js
 # TODO customise this
 src/pages/404.tsx

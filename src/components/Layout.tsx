@@ -52,7 +52,7 @@ const NavSpacer = styled.div<ThemedPropsBase>`
 
 const NavSearch = styled.div<ThemedPropsBase>`
   width: 300px;
-  @media (max-width: 600px) {
+  @media (max-width: ${({ theme }) => theme.break}px) {
     width: 100%;
   }
   padding-right: ${spacing}px;

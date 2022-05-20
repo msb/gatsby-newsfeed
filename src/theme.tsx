@@ -2,12 +2,16 @@ import React, { ReactElement, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 type AppTheme = {
+  // general border spacing in pixels
   spacing: number
+  // responsive width break size between small and large screens
+  break: number
 }
 
 // The application theme (current only specifies the spacing)
 const theme: AppTheme = {
   spacing: 6,
+  break: 600,
 }
 
 type ThemedPropsBase = {

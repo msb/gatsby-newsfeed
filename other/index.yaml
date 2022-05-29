@@ -1,0 +1,17 @@
+# TODO this will be replaced with a custom transformer
+---
+- type: ImageGallery
+  title: Example Album
+  slug: example-album # TODO s/b implicit
+  date: '2019-02-14'
+  image: './example-album/2015-03-12 19.58.40.jpg'
+- type: Quiz
+  title: British Birds
+  slug: british_birds # TODO s/b implicit
+  date: '2018-12-05'
+  image: './images/Quiz.jpg'
+- type: Quiz
+  title: UK Prime Ministers
+  slug: uk-prime-ministers # TODO s/b implicit
+  date: '2018-10-30'
+  image: './images/Quiz.jpg'

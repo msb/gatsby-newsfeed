@@ -1,0 +1,32 @@
+- title: Only You (Yazoo)
+  slug: only-you
+  date: '2019-01-03'
+  image: './ukulele.png'
+  keywords:
+  - ukulele
+  - yazoo
+  file: './Only You.pdf'
+- title: Romeo & Juliet
+  date: '2021-03-02'
+  image: './ukulele.png'
+  keywords:
+  - ukulele
+  - dire
+  - straits
+  file: './Romeo & Juliet - Dire Straits.2.pdf'
+- title: Kiss Me
+  date: '2017-09-01'
+  image: './ukulele.png'
+  keywords:
+  - ukulele
+  - sixpence
+  - richer
+  file: './Kiss Me - Sixpence None The Richer.pdf'
+- title: Hold Me Now
+  date: '2017-11-01'
+  image: './ukulele.png'
+  keywords:
+  - ukulele
+  - thompson
+  - twins
+  file: './Hold Me Now.pdf'

@@ -18,7 +18,13 @@ const config: GatsbyConfig = {
     },
     'gatsby-plugin-image',
     'gatsby-plugin-sharp',
-    'gatsby-transformer-yaml',
+    {
+      resolve: 'gatsby-transformer-yaml',
+      options: {
+        // this assumes that YAML nodes will be named by the file's parent directory.
+        typeName: ({ node }) => path.basename(path.join(node.absolutePath, '..')),
+      },
+    },
     'gatsby-transformer-sharp',
     'gatsby-plugin-mdx',
   ],

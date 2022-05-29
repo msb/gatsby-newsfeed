@@ -2,7 +2,6 @@ import React, { FC, ReactElement, useState } from 'react'
 import styled from 'styled-components'
 import { pdfjs, Document, Page } from 'react-pdf'
 import { ThemedPropsBase, spacing } from '../../theme'
-import { MdxComponentProps } from '.'
 
 // configured `react-pdf` to use minified worker (https://www.npmjs.com/package/react-pdf)
 pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
@@ -50,8 +49,10 @@ const StyledPage = styled(Page)<ThemedPropsBase>`
   margin-top: ${spacing}px
 `
 
-type TextDigitalDocumentProps = MdxComponentProps & {
-  // The link to the PDF
+export type TextDigitalDocumentProps = {
+  // The page title.
+  title: string
+  // The link to the PDF.
   file: { publicURL: string }
 }
 

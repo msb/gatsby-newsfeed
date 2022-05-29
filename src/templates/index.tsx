@@ -1,7 +1,7 @@
 import React, {
   useState, useMemo, useEffect, ReactElement,
 } from 'react'
-import { graphql, PageProps } from 'gatsby'
+import { PageProps } from 'gatsby'
 import styled from 'styled-components'
 import VisibilitySensor from 'react-visibility-sensor'
 import { isEqual } from 'lodash'
@@ -34,9 +34,6 @@ const ListEnd = styled.div`
 export type BasePost = {
   // the content type (maps to the rendering component)
   type: string
-  // The name of the component rendering the content.
-  // Only supplied if it's different from the `type`
-  component?: string
 }
 
 // Defines the index for a content item.
@@ -48,9 +45,7 @@ export type Post = BasePost & LinkProps & {
 }
 
 type DataProps = {
-  allIndexYaml: {
-    nodes: Post[]
-  }
+  nodes: Post[]
 }
 
 // Number of page link items used when rendering the next chunk of page links.
@@ -77,7 +72,7 @@ const NoResults = ({ query }: { query: string }): ReactElement | null => (
 // More of the list is rendered as the page is scrolled down. The page also filters
 // content based on the query context.
 const IndexPage = (
-  { data: { allIndexYaml: { nodes: fullList } } }: PageProps<DataProps>,
+  { pageContext: { nodes: fullList } }: PageProps<never, DataProps>,
 ): ReactElement => {
   // the query context
   const { query } = useQuery()
@@ -135,6 +130,7 @@ const IndexPage = (
   )
 }
 
+/*
 export const query = graphql`
   query {
     allIndexYaml(sort: {fields: date, order: DESC}) {
@@ -154,5 +150,6 @@ export const query = graphql`
     }
   }
 `
+*/
 
 export default IndexPage

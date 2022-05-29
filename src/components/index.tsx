@@ -1,4 +1,5 @@
 import { IGatsbyImageData } from 'gatsby-plugin-image'
+import ContentLayout from './ContentLayout'
 import Icon from './Icon'
 import Layout from './Layout'
 import Paper from './Paper'
@@ -24,5 +25,5 @@ type LinkProps = {
 
 export type { LinkProps }
 export {
-  Icon, Layout, PortholeLink, Paper, Picture, Title,
+  ContentLayout, Icon, Layout, PortholeLink, Paper, Picture, Title,
 }

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import styled from 'styled-components'
 import { pdfjs, Document, Page } from 'react-pdf'
 import { ThemedPropsBase, spacing } from '../../theme'
@@ -57,9 +57,9 @@ export type TextDigitalDocumentProps = {
 }
 
 // A content component that renders a PDF document
-const TextDigitalDocument: FC<TextDigitalDocumentProps> = ({
+function TextDigitalDocument({
   title, file: { publicURL },
-}): ReactElement => {
+}: TextDigitalDocumentProps): ReactElement {
   const [numPages, setNumPages] = useState(1)
 
   const pages = []

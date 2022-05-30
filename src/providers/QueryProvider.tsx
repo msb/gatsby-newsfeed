@@ -1,4 +1,6 @@
-import React, { FC, useState, useMemo } from 'react'
+import React, {
+  useState, useMemo, ReactNode, ReactElement,
+} from 'react'
 
 type Query = {
   query: string
@@ -9,7 +11,7 @@ type Query = {
 const QueryContext = React.createContext<Query>({ query: '', setQuery: () => null })
 
 // Context provider for the current query text.
-const QueryProvider: FC = ({ children }) => {
+function QueryProvider({ children }: { children: ReactNode }): ReactElement {
   const [query, setQuery] = useState('')
 
   const value = useMemo(() => ({ query, setQuery }), [query, setQuery])

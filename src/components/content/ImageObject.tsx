@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import { Picture } from '..'
 import TwoPanelLayout from './TwoPanelLayout'
@@ -15,14 +15,16 @@ export type ImageObjectProps = MdxComponentProps & {
 }
 
 // A component that renders image object content.
-const ImageObject: FC<ImageObjectProps> = ({
+function ImageObject({
   body, image: { childImageSharp: { gatsbyImageData: { images, width } } }, title,
-}): ReactElement => (
-  <TwoPanelLayout title={title} body={body} leftWidthRatio={0.65}>
-    <Picture sources={images.sources}>
-      <MainImage {...images.fallback} alt={title} $width={width} />
-    </Picture>
-  </TwoPanelLayout>
-)
+}: ImageObjectProps): ReactElement {
+  return (
+    <TwoPanelLayout title={title} body={body} leftWidthRatio={0.65}>
+      <Picture sources={images.sources}>
+        <MainImage {...images.fallback} alt={title} $width={width} />
+      </Picture>
+    </TwoPanelLayout>
+  )
+}
 
 export default ImageObject

@@ -21,10 +21,12 @@ const IconLink = styled(Link)`
 `
 
 // The layout component all content pages
-const ContentLayout = ({ children }: { children: ReactNode | undefined }): ReactElement => (
-  <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
-    { children }
-  </Layout>
-)
+function ContentLayout({ children }: { children: ReactNode | undefined }): ReactElement {
+  return (
+    <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
+      { children }
+    </Layout>
+  )
+}
 
 export default ContentLayout

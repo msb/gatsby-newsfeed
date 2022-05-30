@@ -18,9 +18,9 @@ type ThemedPropsBase = {
   theme: AppTheme
 }
 
-const Theme = ({ children }: { children: ReactNode }): ReactElement => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
-)
+function Theme({ children }: { children: ReactNode }): ReactElement {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+}
 
 // Helper function to give a theme's spacing
 const spacing = (props: ThemedPropsBase): number => props.theme.spacing

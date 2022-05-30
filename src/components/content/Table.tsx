@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { MdxComponentProps } from '.'
@@ -102,9 +102,9 @@ export type TableContentProps = MdxComponentProps & {
 
 // A component that renders a responsive table. The component is based on the approach in this
 // example: https://codepen.io/AllThingsSmitty/pen/MyqmdM
-const TableContent: FC<TableContentProps> = ({
+function TableContent({
   title, body, headers, widths, data, maxWidth, breakWidth,
-}): ReactElement => {
+}: TableContentProps): ReactElement {
   // set empty headers, if not defined
   const theHeaders = (headers === null ? Array(data[0].length).fill('') : headers)
   // set equal widths, if not defined

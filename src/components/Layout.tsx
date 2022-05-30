@@ -1,5 +1,5 @@
 import { navigate } from 'gatsby'
-import React from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { useQuery } from '../providers/QueryProvider'
@@ -64,7 +64,7 @@ type LayoutProps = {
 }
 
 // The main layout component
-const Layout = ({ navbar, children }: React.PropsWithChildren<LayoutProps>): React.ReactElement => {
+function Layout({ navbar, children }: PropsWithChildren<LayoutProps>): ReactElement {
   // the query context
   const { query, setQuery } = useQuery()
 

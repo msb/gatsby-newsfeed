@@ -13,9 +13,9 @@ type DataProps = {
 
 // A newfeed page that renders all content sourced from MDX nodes. The content is rendered by
 // different `content` components depending the `type` defined in the frontmatter.
-const MdxContent = (
+function MdxContent(
   { pageContext: { body, frontmatter } }: PageProps<never, DataProps>,
-): ReactElement => {
+): ReactElement {
   const Component = registry.get(frontmatter.type)
   return (
     <ContentLayout>

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import styled from 'styled-components'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { ThemedPropsBase, spacing } from '../../theme'
@@ -61,20 +61,22 @@ export type TwoPanelLayoutProps = MdxComponentProps & {
 
 // This component renders a responsive two panel layout with the image/video etc in the left hand
 // panel and the text content in the right hand panel.
-const TwoPanelLayout: FC<TwoPanelLayoutProps> = ({
+function TwoPanelLayout({
   title, body, children, leftWidthRatio = 0.5,
-}): ReactElement => (
-  <>
-    <Title>{ title }</Title>
-    <Container>
-      <PanelLeft $width={leftWidthRatio * 100}>{ children }</PanelLeft>
-      <PanelRight $width={(1 - leftWidthRatio) * 100}>
-        <PanelRightPaper>
-          <MDXRenderer>{ body }</MDXRenderer>
-        </PanelRightPaper>
-      </PanelRight>
-    </Container>
-  </>
-)
+}: PropsWithChildren<TwoPanelLayoutProps>): ReactElement {
+  return (
+    <>
+      <Title>{ title }</Title>
+      <Container>
+        <PanelLeft $width={leftWidthRatio * 100}>{ children }</PanelLeft>
+        <PanelRight $width={(1 - leftWidthRatio) * 100}>
+          <PanelRightPaper>
+            <MDXRenderer>{ body }</MDXRenderer>
+          </PanelRightPaper>
+        </PanelRight>
+      </Container>
+    </>
+  )
+}
 
 export default TwoPanelLayout

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { ThemedPropsBase, spacing } from '../theme'
@@ -72,7 +72,7 @@ const LinkImage = styled.img.attrs({ decoding: 'async' })`
 // Based closely on https://codepen.io/mackorichardson/pen/prJyq, this component renders a page
 // link styled as a porthole with an image framed in the porthole. The hover event causes the image
 // to zoom slightly.
-const PortholeLink:React.FC<LinkProps> = ({ title, slug, image: { childImageSharp } }) => {
+function PortholeLink({ title, slug, image: { childImageSharp } }: LinkProps): ReactElement {
   const { gatsbyImageData: { images, width, height } } = childImageSharp
   const [opacity, setOpacity] = useState(0)
 

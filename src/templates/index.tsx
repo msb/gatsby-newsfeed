@@ -56,8 +56,8 @@ const PAGE_DELAY = 100
 const STARTING_PAGE = 1
 
 // Displayed when no items are found for the query
-const NoResults = ({ query }: { query: string }): ReactElement | null => (
-  query ? (
+function NoResults({ query }: { query: string }): ReactElement | null {
+  return query ? (
     <h3>
       Nothing found for
       &apos;
@@ -65,15 +65,15 @@ const NoResults = ({ query }: { query: string }): ReactElement | null => (
       &apos;
     </h3>
   ) : null
-)
+}
 
 // The newsfeed's home page - renders a list of page links ordered by date published.
 // For efficiency, the only the potion of the list visible on the viewport is rendered.
 // More of the list is rendered as the page is scrolled down. The page also filters
 // content based on the query context.
-const IndexPage = (
+function IndexPage(
   { pageContext: { nodes: fullList } }: PageProps<never, DataProps>,
-): ReactElement => {
+): ReactElement {
   // the query context
   const { query } = useQuery()
 

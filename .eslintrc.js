@@ -15,8 +15,6 @@ module.exports = {
     // no benefit to this
     'linebreak-style': 'off',
     // disabled on 1st pass
-    'react/function-component-definition': 'off',
-    // disabled on 1st pass
     semi: 'off',
     // disabled on 1st pass
     'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],

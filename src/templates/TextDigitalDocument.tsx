@@ -6,12 +6,14 @@ import ContentTextDigitalDocument, {
 } from '../components/content/TextDigitalDocument'
 
 // A newfeed page that renders PDF content.
-const TextDigitalDocument = (
+function TextDigitalDocument(
   { pageContext }: PageProps<never, TextDigitalDocumentProps>,
-): ReactElement => (
-  <ContentLayout>
-    <ContentTextDigitalDocument {...pageContext} />
-  </ContentLayout>
-)
+): ReactElement {
+  return (
+    <ContentLayout>
+      <ContentTextDigitalDocument {...pageContext} />
+    </ContentLayout>
+  )
+}
 
 export default TextDigitalDocument

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import ReactPlayer from 'react-player'
 import TwoPanelLayout from './TwoPanelLayout'
@@ -35,9 +35,9 @@ export type VideoObjectProps = MdxComponentProps & ({
 }
 
 // A component that renders video object content.
-const VideoObject: FC<VideoObjectProps> = ({
+function VideoObject({
   title, body, embedUrl, file, aspectRatio = '16 / 9',
-}): ReactElement => {
+}: VideoObjectProps): ReactElement {
   const url = (embedUrl || file?.publicURL) as string
   return (
     <TwoPanelLayout title={title} body={body} leftWidthRatio={0.65}>

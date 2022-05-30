@@ -1,5 +1,5 @@
 /* global HTMLFormElement, HTMLInputElement */
-import React, { FC, FormEventHandler, ChangeEventHandler } from 'react'
+import React, { FormEventHandler, ChangeEventHandler, ReactElement } from 'react'
 import styled from 'styled-components'
 import { ThemedPropsBase, spacing } from '../theme'
 import Icon from './Icon'
@@ -48,13 +48,15 @@ type SearchFormProps = {
 }
 
 // A component combining a styled search input and form.
-const SearchForm: FC<SearchFormProps> = ({ value, onSubmit, onChange }) => (
-  <Form onSubmit={onSubmit}>
-    <Input onChange={onChange} value={value} />
-    <Button type="submit">
-      <Icon>search</Icon>
-    </Button>
-  </Form>
-)
+function SearchForm({ value, onSubmit, onChange }: SearchFormProps): ReactElement {
+  return (
+    <Form onSubmit={onSubmit}>
+      <Input onChange={onChange} value={value} />
+      <Button type="submit">
+        <Icon>search</Icon>
+      </Button>
+    </Form>
+  )
+}
 
 export default SearchForm

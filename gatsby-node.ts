@@ -66,7 +66,7 @@ const COMMON_FIELDS = `
 const EXTRA_FIELDS_FOR_BASE_CONTENT = {
   ImageObject: '',
   Recipe: '',
-  VideoObject: `
+  Video: `
     embedUrl
     file {
       publicURL

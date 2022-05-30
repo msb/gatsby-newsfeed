@@ -56,7 +56,7 @@ const PanelRightPaper = styled(Paper)<ThemedPropsBase>`
 
 export type TwoPanelLayoutProps = MdxComponentProps & {
   // The width ratio of the left hand panel.
-  leftWidthRatio?: number
+  leftWidthRatio: number
 }
 
 // This component renders a responsive two panel layout with the image/video etc in the left hand

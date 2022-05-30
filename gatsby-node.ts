@@ -64,8 +64,9 @@ const COMMON_FIELDS = `
 
 // A map of specific fields required for each content type.
 const EXTRA_FIELDS_FOR_BASE_CONTENT = {
-  ImageObject: '',
-  Recipe: '',
+  Image: `
+    leftWidthRatio
+  `,
   Video: `
     embedUrl
     file {

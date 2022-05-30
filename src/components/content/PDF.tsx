@@ -49,7 +49,7 @@ const StyledPage = styled(Page)<ThemedPropsBase>`
   margin-top: ${spacing}px
 `
 
-export type TextDigitalDocumentProps = {
+export type PDFProps = {
   // The page title.
   title: string
   // The link to the PDF.
@@ -57,9 +57,7 @@ export type TextDigitalDocumentProps = {
 }
 
 // A content component that renders a PDF document
-function TextDigitalDocument({
-  title, file: { publicURL },
-}: TextDigitalDocumentProps): ReactElement {
+function PDF({ title, file: { publicURL } }: PDFProps): ReactElement {
   const [numPages, setNumPages] = useState(1)
 
   const pages = []
@@ -83,4 +81,4 @@ function TextDigitalDocument({
   )
 }
 
-export default TextDigitalDocument
+export default PDF

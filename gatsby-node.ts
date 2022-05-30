@@ -42,7 +42,7 @@ type BaseContentResult = {
 
 // The type of data expected from a PDF content query.
 type PdfContentResult = {
-  allTextDigitalDocument: {
+  allPdf: {
     nodes: (BaseFrontmatter & {
       id: string
     })[]
@@ -126,20 +126,18 @@ export const createPages: GatsbyNode['createPages'] = async (
       // Create the content page.
       createPage({
         path: makeSlug(node.frontmatter),
-        component: path.resolve(`${TEMPLATE_DIR}/content.tsx`),
+        component: path.resolve(`${TEMPLATE_DIR}/mdx.tsx`),
         context: node,
       })
       // ..and add a record for the index page.
-      index.push({
-        ...node.frontmatter, id: node.id, slug: makeSlug(node.frontmatter),
-      })
+      index.push({ ...node.frontmatter, id: node.id, slug: makeSlug(node.frontmatter) })
     })
   })
 
   // Retrieve and process the PDF content data.
   const pdfResult = await graphql<PdfContentResult>(`
     query {
-      allTextDigitalDocument {
+      allPdf {
         nodes {
           id
           ${COMMON_FIELDS}
@@ -150,17 +148,15 @@ export const createPages: GatsbyNode['createPages'] = async (
       }
     }
   `)
-  pdfResult.data.allTextDigitalDocument.nodes.forEach((node) => {
+  pdfResult.data.allPdf.nodes.forEach((node) => {
     // Create the PDF content page.
     createPage({
       path: makeSlug(node),
-      component: path.resolve(`${TEMPLATE_DIR}/TextDigitalDocument.tsx`),
+      component: path.resolve(`${TEMPLATE_DIR}/pdf.tsx`),
       context: node,
     })
     // ..and add a record for the index page.
-    index.push({
-      ...node, type: 'TextDigitalDocument', slug: makeSlug(node),
-    })
+    index.push({ ...node, type: 'PDF', slug: makeSlug(node) })
   })
 
   // Create the index page.

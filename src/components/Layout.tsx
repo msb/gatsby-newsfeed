@@ -7,6 +7,8 @@ import Theme, { ThemedPropsBase, spacing } from '../theme'
 import SearchForm from './SearchForm'
 
 const APP_MAX_WIDTH = 1500
+const MAIN_TOP = 1
+const MAIN_BOTTOM = 40
 
 const Background = styled.div`
   background-color: beige;
@@ -17,12 +19,12 @@ const Main = styled.main`
   max-width: ${APP_MAX_WIDTH}px;
   margin: auto;
   background-color: palegoldenrod;
-  /* ensures the background color is applied to the whole height of the viewport */
-  min-height: 100vh;
-  /* allows the content to be seen passed the nav bar */
-  padding-bottom: 44px;
   /* hack to apply background color to top of headings */
-  padding-top: 1px;
+  padding-top: ${MAIN_TOP}px;
+  /* allows the content to be seen passed the nav bar */
+  padding-bottom: ${MAIN_BOTTOM}px;
+  /* ensures the background color is applied to the whole height of the viewport */
+  min-height: calc(100vh - ${MAIN_TOP + MAIN_BOTTOM}px);
 `
 
 const BottomFixed = styled.div<ThemedPropsBase>`

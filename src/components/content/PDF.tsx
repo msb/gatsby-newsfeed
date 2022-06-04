@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import { pdfjs, Document, Page } from 'react-pdf'
 import { ThemedPropsBase, spacing } from '../../theme'
 
-// configured `react-pdf` to use minified worker (https://www.npmjs.com/package/react-pdf)
-pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+if (typeof window !== "undefined") {
+  // configured `react-pdf` to use minified worker (https://www.npmjs.com/package/react-pdf)
+  pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+}
 
 const Centred = styled.div`
   display: flex;
@@ -45,7 +47,7 @@ const DownloadButton = styled.a.attrs({ download: true })<ThemedPropsBase>`
   }
 `
 
-const StyledPage = styled(Page)<ThemedPropsBase>`
+const PageWrapper = styled.div<ThemedPropsBase>`
   margin-top: ${spacing}px
 `
 
@@ -60,9 +62,14 @@ export type PDFProps = {
 function PDF({ title, file: { publicURL } }: PDFProps): ReactElement {
   const [numPages, setNumPages] = useState(1)
 
+  if (typeof window === "undefined") {
+    // TODO in theory HTML rendering could be SSR - need to figure this out
+    return <></>
+  }
+  
   const pages = []
   for (let i = 1; i <= numPages; i += 1) {
-    pages.push(<StyledPage key={i} pageNumber={i} />)
+    pages.push(<PageWrapper><Page key={i} pageNumber={i} /></PageWrapper>)
   }
 
   return (

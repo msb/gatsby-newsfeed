@@ -130,26 +130,4 @@ function IndexPage(
   )
 }
 
-/*
-export const query = graphql`
-  query {
-    allIndexYaml(sort: {fields: date, order: DESC}) {
-      nodes {
-        id
-        type
-        title
-        slug
-        date
-        image {
-          childImageSharp {
-            gatsbyImageData
-          }
-        }
-        keywords
-      }
-    }
-  }
-`
-*/
-
 export default IndexPage

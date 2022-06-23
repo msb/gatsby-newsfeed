@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { pdfjs, Document, Page } from 'react-pdf'
 import { ThemedPropsBase, spacing } from '../../theme'
 
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   // configured `react-pdf` to use minified worker (https://www.npmjs.com/package/react-pdf)
-  pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+  pdfjs.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js'
 }
 
 const Centred = styled.div`
@@ -59,14 +59,14 @@ export type PDFProps = {
 }
 
 // A content component that renders a PDF document
-function PDF({ title, file: { publicURL } }: PDFProps): ReactElement {
+function PDF({ title, file: { publicURL } }: PDFProps): ReactElement | null {
   const [numPages, setNumPages] = useState(1)
 
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     // TODO in theory HTML rendering could be SSR - need to figure this out
-    return <></>
+    return null
   }
-  
+
   const pages = []
   for (let i = 1; i <= numPages; i += 1) {
     pages.push(<PageWrapper><Page key={i} pageNumber={i} /></PageWrapper>)

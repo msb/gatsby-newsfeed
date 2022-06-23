@@ -12,8 +12,16 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'data',
+        name: 'drive',
         path: path.resolve('data'),
+      },
+    },
+    {
+      resolve: '@fs/gatsby-plugin-drive',
+      options: {
+        folderId: '1634d_6lSDjtz1X-SBH0wDQe2Arpk7ACz',
+        keyFile: 'terraform-admin@bank-download-43d518.iam.gserviceaccount.com.json',
+        destination: 'drive',
       },
     },
     'gatsby-plugin-image',

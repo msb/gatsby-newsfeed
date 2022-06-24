@@ -49,17 +49,21 @@ type PdfContentResult = {
   }
 }
 
+const IMAGE_FIELD = `
+  {
+    childImageSharp {
+      gatsbyImageData
+    }
+  }
+`
+
 // Fields common to all graphQL results.
 const COMMON_FIELDS = `
   title
   slug
   date
   keywords
-  image {
-    childImageSharp {
-      gatsbyImageData
-    }
-  }
+  image ${IMAGE_FIELD}
 `
 
 // A map of specific fields required for each content type.
@@ -86,6 +90,12 @@ const EXTRA_FIELDS_FOR_BASE_CONTENT = {
 // A map of specific fields required for each content type.
 const EXTRA_FIELDS_FOR_CUSTOM_CONTENT = {
   Simple: '',
+  Album: `
+    photos {
+      caption
+      photo ${IMAGE_FIELD}
+    }
+  `,
 }
 
 // Returns `slug`, if available, or else makes a slug of the `title`.
@@ -112,11 +122,11 @@ export const createPages: GatsbyNode['createPages'] = async (
         query {
           allMdx (filter: { frontmatter: { type: { eq: "${type}" } } }) {
             nodes {
-                id
-                frontmatter {
-                  type
-                  ${COMMON_FIELDS}
-                  ${query}
+              id
+              frontmatter {
+                type
+                ${COMMON_FIELDS}
+                ${query}
               }
               body
             }
@@ -170,6 +180,46 @@ export const createPages: GatsbyNode['createPages'] = async (
     })
     // ..and add a record for the index page.
     index.push({ ...node, type: 'PDF', slug: makeSlug(node) })
+  })
+
+  const photoTemplate = await graphql<unknown>(`
+    query {
+      mdx (slug: { eq: "google-photos" }) {
+        id
+        body
+      }
+    }
+  `)
+
+  const albumsResult = await graphql<unknown>(`
+    query {
+      allGooglePhotosAlbum {
+        nodes {
+          title
+          cover {
+            file ${IMAGE_FIELD}
+          }
+          photos {
+            description
+            file ${IMAGE_FIELD}
+          }
+        }
+      }
+    }
+  `)
+  albumsResult.data.allGooglePhotosAlbum.nodes.forEach((node) => {
+    createPage({
+      path: makeSlug(node),
+      component: path.resolve(`${TEMPLATE_DIR}/custom.tsx`),
+      context: {
+        frontmatter: {
+          photos: node.photos.map((photo) => ({photo: photo.file, caption: photo.description}))
+        },
+        body: photoTemplate.data.mdx.body
+      },
+    })
+    // ..and add a record for the index page.
+    index.push({ title: node.title, date: new Date(), keywords: [], image: node.cover.file, slug: makeSlug(node) })
   })
 
   // Create the index page.

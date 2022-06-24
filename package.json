@@ -17,6 +17,7 @@
     "lint": "npx eslint . --max-warnings=0"
   },
   "dependencies": {
+    "@reach/dialog": "^0.17.0",
     "gatsby": "^4.11.2",
     "gatsby-plugin-image": "^2.11.1",
     "gatsby-plugin-layout": "^3.12.1",
@@ -24,6 +25,7 @@
     "gatsby-plugin-sharp": "^4.11.1",
     "gatsby-plugin-styled-components": "^5.11.0",
     "gatsby-source-filesystem": "^4.11.1",
+    "gatsby-source-google-photos": "^3.1.1",
     "gatsby-transformer-sharp": "^4.11.0",
     "gatsby-transformer-yaml": "^4.11.0",
     "lodash": "^4.17.21",
@@ -32,6 +34,7 @@
     "react-helmet": "^6.1.0",
     "react-pdf": "^5.7.2",
     "react-player": "^2.10.0",
+    "react-use": "^17.4.0",
     "react-visibility-sensor": "^5.1.1",
     "styled-components": "^5.3.5"
   },

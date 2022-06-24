@@ -27,7 +27,15 @@ const config: GatsbyConfig = {
     },
     'gatsby-transformer-sharp',
     'gatsby-plugin-mdx',
-  ],
+    {
+      resolve: "gatsby-source-google-photos",
+      options: {
+        albumsTitles: ["Wedding", "Dorset"],
+        photosMaxWidth: 2048,
+        photosMaxHeight: 2048,
+      },
+    },
+],
   // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/#mapping-node-types
   mapping: {
     // Allows the publicUrl of a file resource to be used.

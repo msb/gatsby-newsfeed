@@ -107,6 +107,13 @@ export const createSchemaCustomization = async ({ actions }) => {
       keywords: [String!]
       secret: Boolean
     }
+    type Site implements Node {
+      siteMetadata: SiteMetadata
+    }
+    type SiteMetadata {
+      title: String!
+      secretSlug: String
+    }
   `)
 }
 
@@ -145,6 +152,7 @@ type IndexContentResult = {
 type SiteMetadataResult = {
   site: {
     siteMetadata: {
+      title: string
       secretSlug?: string
     }
   }
@@ -202,6 +210,18 @@ export const createPages: GatsbyNode['createPages'] = async (
   // TODO the difference between the ways of creating pages for different content types
   // should be abstracted.
   // TODO allow for an optional `image` - if not specified, a stock type image should be used.
+
+  // Retrieve site metadata
+  const siteResultMetadata = await graphql<SiteMetadataResult>(`
+    query {
+      site {
+        siteMetadata {
+          secretSlug
+          title
+        }
+      }
+    }
+  `)
 
   // Create a promise for the data for each base content type.
   const resultPromises = Object.entries(EXTRA_FIELDS_FOR_BASE_CONTENT).map(([type, query]) => (
@@ -261,16 +281,6 @@ export const createPages: GatsbyNode['createPages'] = async (
     })
   })
 
-  const siteResultMetadata = await graphql<SiteMetadataResult>(`
-    query {
-      site {
-        siteMetadata {
-          secretSlug
-        }
-      }
-    }
-  `)
-
   // Retrieve and process the `INDEX_NODE_TYPE` data.
   const indexResult = await graphql<IndexContentResult>(INDEX_QUERY)
 
@@ -278,16 +288,22 @@ export const createPages: GatsbyNode['createPages'] = async (
   createPage({
     path: '/',
     component: path.resolve(`${TEMPLATE_DIR}/index.tsx`),
-    context: { nodes: indexResult.data?.allIndex.nodes },
+    context: {
+      nodes: indexResult.data?.allIndex.nodes,
+      title: siteResultMetadata.data?.site.siteMetadata.title,
+    },
   })
 
-  // Retrieve and process the `INDEX_NODE_TYPE` data.
+  // Retrieve and process the secret `INDEX_NODE_TYPE` data.
   const secretResult = await graphql<IndexContentResult>(SECRET_QUERY)
 
   // Create the secret index page.
   createPage({
     path: siteResultMetadata.data?.site.siteMetadata.secretSlug || SECRET_SLUG,
     component: path.resolve(`${TEMPLATE_DIR}/index.tsx`),
-    context: { nodes: secretResult.data?.allIndex.nodes },
+    context: {
+      nodes: secretResult.data?.allIndex.nodes,
+      title: siteResultMetadata.data?.site.siteMetadata.title,
+    },
   })
 }

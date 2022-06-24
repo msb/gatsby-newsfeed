@@ -8,7 +8,7 @@ import ContentPDF, {
 // A newfeed page that renders PDF content.
 function PDF({ pageContext }: PageProps<never, PDFProps>): ReactElement {
   return (
-    <ContentLayout>
+    <ContentLayout title={pageContext.title}>
       <ContentPDF {...pageContext} />
     </ContentLayout>
   )

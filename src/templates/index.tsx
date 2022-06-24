@@ -37,6 +37,8 @@ const ListEnd = styled.div`
 export type BasePost = {
   // the content type (maps to the rendering component)
   type: string
+  // the content title
+  title: string
 }
 
 // Defines the index for a content item.
@@ -49,6 +51,8 @@ export type Post = BasePost & LinkProps & {
 
 type DataProps = {
   nodes: Post[]
+  // the site title
+  title: string
 }
 
 // Number of page link items used when rendering the next chunk of page links.
@@ -75,7 +79,7 @@ function NoResults({ query }: { query: string }): ReactElement | null {
 // More of the list is rendered as the page is scrolled down. The page also filters
 // content based on the query context.
 function IndexPage(
-  { pageContext: { nodes: fullList }, path }: PageProps<never, DataProps>,
+  { pageContext: { nodes: fullList, title }, path }: PageProps<never, DataProps>,
 ): ReactElement {
   // the query context
   const { query } = useQuery()
@@ -124,7 +128,7 @@ function IndexPage(
   useEffect(() => setPage(STARTING_PAGE), [query])
 
   return (
-    <Layout>
+    <Layout title={title}>
       <Container>
         {
           filteredList.length === 0 ? <NoResults query={query} /> : (

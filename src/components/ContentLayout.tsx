@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
 import { useIndexPage } from '../providers/IndexPageProvider'
@@ -21,13 +21,18 @@ const IconLink = styled(Link)`
   }
 `
 
+type ContentLayoutProps = {
+  // The page's title
+  title?: string
+}
+
 // The layout component all content pages
-function ContentLayout({ children }: { children: ReactNode | undefined }): ReactElement {
+function ContentLayout({ children, title }: PropsWithChildren<ContentLayoutProps>): ReactElement {
   // the index page context
   const { indexPage } = useIndexPage()
 
   return (
-    <Layout navbar={<IconLink to={indexPage}><Icon>home</Icon></IconLink>}>
+    <Layout title={title} navbar={<IconLink to={indexPage}><Icon>home</Icon></IconLink>}>
       { children }
     </Layout>
   )

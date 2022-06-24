@@ -18,7 +18,7 @@ function MdxContent(
 ): ReactElement {
   const Component = registry.get(frontmatter.type)
   return (
-    <ContentLayout>
+    <ContentLayout title={frontmatter.title}>
       <Component {...{ ...frontmatter, body }} />
     </ContentLayout>
   )

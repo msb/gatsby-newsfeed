@@ -64,10 +64,12 @@ const NavSearch = styled.div<ThemedPropsBase>`
 type LayoutProps = {
   // React component(s) to place in the navbar (left hand)
   navbar?: React.ReactNode
+  // The page's title
+  title?: string
 }
 
 // The main layout component
-function Layout({ navbar, children }: PropsWithChildren<LayoutProps>): ReactElement {
+function Layout({ navbar, title, children }: PropsWithChildren<LayoutProps>): ReactElement {
   // the query context
   const { query, setQuery } = useQuery()
 
@@ -87,6 +89,7 @@ function Layout({ navbar, children }: PropsWithChildren<LayoutProps>): ReactElem
         <link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel="stylesheet" />
         {/* remove any margin on the <body> */}
         <style>body&#123;margin:0;&#125;</style>
+        <title>{ title }</title>
       </Helmet>
       <Background>
         <Main>

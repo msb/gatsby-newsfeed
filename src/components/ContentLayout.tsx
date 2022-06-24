@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
+import { useIndexPage } from '../providers/IndexPageProvider'
 import { Icon, Layout } from '.'
 
 const IconLink = styled(Link)`
@@ -22,8 +23,11 @@ const IconLink = styled(Link)`
 
 // The layout component all content pages
 function ContentLayout({ children }: { children: ReactNode | undefined }): ReactElement {
+  // the index page context
+  const { indexPage } = useIndexPage()
+
   return (
-    <Layout navbar={<IconLink to="/"><Icon>home</Icon></IconLink>}>
+    <Layout navbar={<IconLink to={indexPage}><Icon>home</Icon></IconLink>}>
       { children }
     </Layout>
   )

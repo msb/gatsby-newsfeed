@@ -80,7 +80,7 @@ function PortholeLink({ title, slug, image: { childImageSharp } }: LinkProps): R
     <>
       <Wrapper>
         <Porthole>
-          <StyledLink to={slug} $widthHeightRatio={width / height}>
+          <StyledLink to={`/${slug}`} $widthHeightRatio={width / height}>
             <Picture sources={images.sources}>
               <LinkImage
                 {...images.fallback}

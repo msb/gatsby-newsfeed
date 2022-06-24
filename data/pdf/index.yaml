@@ -22,6 +22,7 @@
   - sixpence
   - richer
   file: './Kiss Me - Sixpence None The Richer.pdf'
+  secret: true
 - title: Hold Me Now
   date: '2017-11-01'
   image: './ukulele.png'
@@ -30,3 +31,4 @@
   - thompson
   - twins
   file: './Hold Me Now.pdf'
+  secret: true

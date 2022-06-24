@@ -3,6 +3,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { useQuery } from '../providers/QueryProvider'
+import { useIndexPage } from '../providers/IndexPageProvider'
 import Theme, { ThemedPropsBase, spacing } from '../theme'
 import SearchForm from './SearchForm'
 
@@ -70,11 +71,14 @@ function Layout({ navbar, children }: PropsWithChildren<LayoutProps>): ReactElem
   // the query context
   const { query, setQuery } = useQuery()
 
+  // the index page context
+  const { indexPage } = useIndexPage()
+
   // submitting any search will navigate to the home page
   const handleSubmit = React.useCallback((event) => {
     event.preventDefault();
-    navigate('/')
-  }, [])
+    navigate(indexPage)
+  }, [indexPage])
 
   return (
     <Theme>

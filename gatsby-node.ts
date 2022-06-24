@@ -3,6 +3,7 @@ import { kebabCase } from 'lodash'
 import path from 'path'
 
 const INDEX_NODE_TYPE = 'Index'
+const SECRET_SLUG = 'secret'
 
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   stage,
@@ -28,6 +29,7 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
 type BaseFrontmatter = {
   slug?: string
   title: string
+  secret?: boolean
 }
 
 // Returns `slug`, if available, or else makes a slug of the `title`.
@@ -37,9 +39,9 @@ const makeSlug = ({ title, slug }: BaseFrontmatter): string => (
 
 // Gets the base data for creating an index node from a node.
 const getIndexDataFromNode = (({
-  type, title, slug, date, keywords,
+  type, title, slug, date, keywords, secret,
 }) => ({
-  type, title, slug, date, keywords,
+  type, title, slug, date, keywords, secret,
 }))
 
 export const sourceNodes = ({
@@ -103,6 +105,7 @@ export const createSchemaCustomization = async ({ actions }) => {
       date: Date!
       image: File! @link(from: "fields.image")
       keywords: [String!]
+      secret: Boolean
     }
   `)
 }
@@ -135,6 +138,15 @@ type IndexContentResult = {
       id: string
       type: string
     })[]
+  }
+}
+
+// The type of data expected from a site metadata query.
+type SiteMetadataResult = {
+  site: {
+    siteMetadata: {
+      secretSlug?: string
+    }
   }
 }
 
@@ -171,6 +183,18 @@ const EXTRA_FIELDS_FOR_BASE_CONTENT = {
     breakWidth
   `,
 }
+
+const [INDEX_QUERY, SECRET_QUERY] = ['filter: { secret: { ne: true } },', ''].map((filter) => `
+  query {
+    allIndex(${filter} sort: {fields: date, order: DESC}) {
+      nodes {
+        id
+        type
+        ${COMMON_FIELDS}
+      }
+    }
+  }
+`)
 
 export const createPages: GatsbyNode['createPages'] = async (
   { graphql, actions: { createPage } },
@@ -237,23 +261,33 @@ export const createPages: GatsbyNode['createPages'] = async (
     })
   })
 
-  // Retrieve and process the `INDEX_NODE_TYPE` data.
-  const indexResult = await graphql<IndexContentResult>(`
+  const siteResultMetadata = await graphql<SiteMetadataResult>(`
     query {
-      allIndex(sort: {fields: date, order: DESC}) {
-        nodes {
-          id
-          type
-          ${COMMON_FIELDS}
+      site {
+        siteMetadata {
+          secretSlug
         }
       }
     }
   `)
+
+  // Retrieve and process the `INDEX_NODE_TYPE` data.
+  const indexResult = await graphql<IndexContentResult>(INDEX_QUERY)
 
   // Create the index page.
   createPage({
     path: '/',
     component: path.resolve(`${TEMPLATE_DIR}/index.tsx`),
     context: { nodes: indexResult.data?.allIndex.nodes },
+  })
+
+  // Retrieve and process the `INDEX_NODE_TYPE` data.
+  const secretResult = await graphql<IndexContentResult>(SECRET_QUERY)
+
+  // Create the secret index page.
+  createPage({
+    path: siteResultMetadata.data?.site.siteMetadata.secretSlug || SECRET_SLUG,
+    component: path.resolve(`${TEMPLATE_DIR}/index.tsx`),
+    context: { nodes: secretResult.data?.allIndex.nodes },
   })
 }

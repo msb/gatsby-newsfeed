@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import VisibilitySensor from 'react-visibility-sensor'
 import { isEqual } from 'lodash'
 import { useQuery } from '../providers/QueryProvider'
+import { useIndexPage } from '../providers/IndexPageProvider'
 import { ThemedPropsBase, spacing } from '../theme'
 import { Layout, LinkProps, PortholeLink } from '../components'
 
@@ -21,6 +22,8 @@ const Container = styled.div`
   box-sizing: border-box;
   justify-content: center;
 `
+
+// TODO try `react-intersection-observer` instead of <VisibilitySensor>
 
 // Used as "visible" element for the <VisibilitySensor> to work with.
 const ListEnd = styled.div`
@@ -72,10 +75,13 @@ function NoResults({ query }: { query: string }): ReactElement | null {
 // More of the list is rendered as the page is scrolled down. The page also filters
 // content based on the query context.
 function IndexPage(
-  { pageContext: { nodes: fullList } }: PageProps<never, DataProps>,
+  { pageContext: { nodes: fullList }, path }: PageProps<never, DataProps>,
 ): ReactElement {
   // the query context
   const { query } = useQuery()
+
+  // the index page context
+  const { indexPage, setIndexPage } = useIndexPage()
 
   // whether or not <ListEnd> is visible
   const [isVisible, setIsVisible] = useState(true)
@@ -93,6 +99,13 @@ function IndexPage(
       return textToSearch.find((text) => text.toLowerCase().indexOf(query.toLowerCase()) !== -1)
     })
   ), [query, fullList])
+
+  useEffect(() => {
+    // set the current index page in the context
+    if (path !== indexPage) {
+      setIndexPage(path)
+    }
+  }, [indexPage, path, setIndexPage])
 
   useEffect(() => {
     if (isVisible || page === 1) {

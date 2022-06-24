@@ -4,7 +4,7 @@ import path from 'path'
 const config: GatsbyConfig = {
   siteMetadata: {
     title: 'Gatsby News Feed',
-    siteUrl: 'https://www.yourdomain.tld',
+    siteUrl: 'http://http://localhost:8000/',
   },
   plugins: [
     'gatsby-plugin-styled-components',

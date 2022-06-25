@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { spacing } from '../../theme'
 import { MdxComponentProps } from '.'
 import { Paper, Title } from '..'
 
@@ -21,6 +22,8 @@ const resolveBreakWidth = ({ $breakWidth }: {$breakWidth: number | null}) => ($b
 const Container = styled.div<ContainerProps>`
   max-width: ${({ $maxWidth }) => ($maxWidth || 1400)}px;
   margin: auto;
+  padding-left: ${spacing}px;
+  padding-right: ${spacing}px;
 
   @media (max-width: ${resolveBreakWidth}px) {
     border: 0;

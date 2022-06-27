@@ -5,37 +5,15 @@ import path from 'path'
 const INDEX_NODE_TYPE = 'Index'
 const SECRET_SLUG = 'secret'
 
-export const INDEX_TRANS_NODE_TYPE = `${INDEX_NODE_TYPE}Transition`
-
-export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
-  stage,
-  loaders,
-  actions,
-}) => {
-  if (['develop-html', 'build-html'].includes(stage)) {
-    // suppress the use of `react-pdf` during the build
-    actions.setWebpackConfig({
-      module: {
-        rules: [
-          {
-            test: /react-pdf/,
-            use: loaders.null(),
-          },
-        ],
-      },
-    })
-  }
-}
-
 // Minimal frontmatter required to support page creation.
-type BaseFrontmatter = {
+export type BaseFrontmatter = {
   slug?: string
   title: string
   secret?: boolean
 }
 
 // Returns `slug`, if available, or else makes a slug of the `title`.
-const makeSlug = ({ title, slug }: BaseFrontmatter): string => (
+export const makeSlug = ({ title, slug }: BaseFrontmatter): string => (
   slug || kebabCase(title)
 )
 
@@ -49,23 +27,10 @@ export const getIndexDataFromNode = (({
 // A map of all file node ids keyed on their absolute path
 const fileNodeIds = {}
 
-// a function for creating FIXME
-export const createTransitionalIndexNode = (index, parentNode, helpers) => {
-  const { getNode } = helpers
-  // get the absolute path of the image
-  const imagePath = path.join(getNode(parentNode).dir, index.image)
-  createIndexNode({
-    ...index,
-    slug: makeSlug(index),
-    // overwrite with the id of the image's node
-    image: fileNodeIds[imagePath],
-  }, helpers, INDEX_TRANS_NODE_TYPE)
-}
-
 // a function for creating an `INDEX_NODE_TYPE` node.
 const createIndexNode = (index, {
   actions: { createNode }, createNodeId, createContentDigest,
-}, indexNodeType=INDEX_NODE_TYPE) => (
+}, indexNodeType = INDEX_NODE_TYPE) => (
   createNode({
     ...index,
     id: createNodeId(`${indexNodeType}-${makeSlug(index)}`), // hashes the inputs into an ID
@@ -79,33 +44,43 @@ const createIndexNode = (index, {
   })
 )
 
+// a function for creating FIXME
+export const createTransitionalIndexNode = (index, node, helpers) => {
+  const { getNode, getNodesByType } = helpers
+
+  if (Object.keys(fileNodeIds).length === 0) {
+    // Create a map of all file node ids keyed on their absolute path
+    getNodesByType('File').forEach((fileNode) => {
+      fileNodeIds[fileNode.absolutePath] = fileNode.id
+    })
+  }
+
+  // get the absolute path of the image
+  const imagePath = path.join(getNode(node.parent).dir, index.image)
+  createIndexNode({
+    ...index,
+    slug: makeSlug(index),
+    // overwrite with the id of the image's node
+    image: fileNodeIds[imagePath],
+  }, helpers, `${INDEX_NODE_TYPE}${node.internal.type}`)
+}
+
 export const sourceNodes = (args) => {
   const { getNodesByType } = args
-
-  // Create a map of all file node ids keyed on their absolute path
-  getNodesByType('File').forEach((node) => {
-    fileNodeIds[node.absolutePath] = node.id
-  })
-
-  // create the `INDEX_NODE_TYPE` nodes for all the `Mdx` nodes
+  // create the transitional nodes for all the `Mdx` nodes
   getNodesByType('Mdx').forEach((node) => (
-    createTransitionalIndexNode(getIndexDataFromNode(node.frontmatter), node.parent, args)
-  ))
-
-  // create the `INDEX_NODE_TYPE` nodes for all the `pdf` nodes
-  getNodesByType('pdf').forEach((node) => (
-    createTransitionalIndexNode(getIndexDataFromNode({ ...node, type: 'PDF' }), node.parent, args)
+    createTransitionalIndexNode(getIndexDataFromNode(node.frontmatter), node, args)
   ))
 }
 
 export const onCreateNode = async (args) => {
   const { actions: { createNodeField }, node } = args
   // For all `INDEX_NODE_TYPE` nodes ..
-  if (node.internal.type === INDEX_TRANS_NODE_TYPE) {
-    createIndexNode(getIndexDataFromNode(node), args)
-  } else if (node.internal.type === INDEX_NODE_TYPE) {
+  if (node.internal.type === INDEX_NODE_TYPE) {
     // .. use the image id provided by `sourceNodes()` to create the `image` `File` node field.
     createNodeField({ node, name: 'image', value: node.image })
+  } else if (node.internal.type.startsWith(INDEX_NODE_TYPE)) {
+    createIndexNode(getIndexDataFromNode(node), args)
   }
 }
 
@@ -144,15 +119,6 @@ type BaseContentResult = {
   }
 }
 
-// The type of data expected from a PDF content query.
-type PdfContentResult = {
-  allPdf: {
-    nodes: (BaseFrontmatter & {
-      id: string
-    })[]
-  }
-}
-
 // The type of data expected from an `INDEX_NODE_TYPE` content query.
 type IndexContentResult = {
   allIndex: {
@@ -174,7 +140,7 @@ type SiteMetadataResult = {
 }
 
 // Fields common to all graphQL results.
-const COMMON_FIELDS = `
+export const COMMON_FIELDS = `
   title
   slug
   date
@@ -271,29 +237,6 @@ export const createPages: GatsbyNode['createPages'] = async (
         component: path.resolve(`${TEMPLATE_DIR}/mdx.tsx`),
         context: node,
       })
-    })
-  })
-
-  // Retrieve and process the PDF content data.
-  const pdfResult = await graphql<PdfContentResult>(`
-    query {
-      allPdf {
-        nodes {
-          id
-          ${COMMON_FIELDS}
-          file {
-            publicURL
-          }
-        }
-      }
-    }
-  `)
-  pdfResult.data?.allPdf.nodes.forEach((node) => {
-    // Create the PDF content page.
-    createPage({
-      path: makeSlug(node),
-      component: path.resolve(`${TEMPLATE_DIR}/pdf.tsx`),
-      context: node,
     })
   })
 

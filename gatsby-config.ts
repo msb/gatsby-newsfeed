@@ -27,6 +27,7 @@ const config: GatsbyConfig = {
     },
     'gatsby-transformer-sharp',
     'gatsby-plugin-mdx',
+    'gatsby-plugin-pdf',
   ],
   // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/#mapping-node-types
   mapping: {

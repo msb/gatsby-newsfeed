@@ -39,48 +39,53 @@ const makeSlug = ({ title, slug }: BaseFrontmatter): string => (
 
 // Gets the base data for creating an index node from a node.
 const getIndexDataFromNode = (({
-  type, title, slug, date, keywords, secret,
+  type, title, slug, date, image, keywords, secret,
 }) => ({
-  type, title, slug, date, keywords, secret,
+  type, title, slug, date, image, keywords, secret,
 }))
 
-export const sourceNodes = ({
-  actions: { createNode }, createNodeId, createContentDigest, getNode, getNodesByType,
-}) => {
-  // Create a map of all file nodes keyed on their absolute path
-  const fileNodes = {}
-  getNodesByType('File').forEach((node) => {
-    fileNodes[node.absolutePath] = node
-  })
+// A map of all file node ids keyed on their absolute path
+const fileNodeIds = {}
 
-  // a closure for creating an `INDEX_NODE_TYPE` node.
-  const createIndexNode = (index, parentNode, image) => {
-    // get the absolute path of the image
-    const imagePath = path.join(getNode(parentNode).dir, image)
-    createNode({
-      ...index,
-      id: createNodeId(`${INDEX_NODE_TYPE}-${makeSlug(index)}`), // hashes the inputs into an ID
-      slug: makeSlug(index),
-      parent: null,
-      children: [],
-      internal: {
-        type: INDEX_NODE_TYPE,
-        content: JSON.stringify(index),
-        contentDigest: createContentDigest(index),
-      },
-      // provide the id of the image's node
-      imageId: fileNodes[imagePath].id,
-    })
-  }
+// a function for creating an `INDEX_NODE_TYPE` node.
+const createIndexNode = (index, parentNode, {
+  actions: { createNode }, getNode, createNodeId, createContentDigest,
+}) => {
+  // get the absolute path of the image
+  const imagePath = path.join(getNode(parentNode).dir, index.image)
+
+  createNode({
+    ...index,
+    id: createNodeId(`${INDEX_NODE_TYPE}-${makeSlug(index)}`), // hashes the inputs into an ID
+    slug: makeSlug(index),
+    parent: null,
+    children: [],
+    internal: {
+      type: INDEX_NODE_TYPE,
+      content: JSON.stringify(index),
+      contentDigest: createContentDigest(index),
+    },
+    // provide the id of the image's node
+    imageId: fileNodeIds[imagePath],
+  })
+}
+
+export const sourceNodes = (helpers) => {
+  const { getNodesByType } = helpers
+
+  // Create a map of all file node ids keyed on their absolute path
+  getNodesByType('File').forEach((node) => {
+    fileNodeIds[node.absolutePath] = node.id
+  })
 
   // create the `INDEX_NODE_TYPE` nodes for all the `Mdx` nodes
   getNodesByType('Mdx').forEach((node) => (
-    createIndexNode(getIndexDataFromNode(node.frontmatter), node.parent, node.frontmatter.image)
+    createIndexNode(getIndexDataFromNode(node.frontmatter), node.parent, helpers)
   ))
 
   // create the `INDEX_NODE_TYPE` nodes for all the `pdf` nodes
   getNodesByType('pdf').forEach((node) => (
-    createIndexNode(getIndexDataFromNode({ ...node, type: 'PDF' }), node.parent, node.image)
+    createIndexNode(getIndexDataFromNode({ ...node, type: 'PDF' }), node.parent, helpers)
   ))
 }
 

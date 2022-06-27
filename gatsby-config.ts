@@ -30,8 +30,9 @@ const config: GatsbyConfig = {
   ],
   // https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/#mapping-node-types
   mapping: {
+    // TODO don't know why we don't need this anymore.
     // Allows the publicUrl of a file resource to be used.
-    'mdx.frontmatter.file': 'File.base',
+    // 'mdx.frontmatter.file': 'File.base',
   },
 }
 

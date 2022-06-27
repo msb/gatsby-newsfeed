@@ -5,6 +5,8 @@ import path from 'path'
 const INDEX_NODE_TYPE = 'Index'
 const SECRET_SLUG = 'secret'
 
+export const INDEX_TRANS_NODE_TYPE = `${INDEX_NODE_TYPE}Transition`
+
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   stage,
   loaders,
@@ -38,7 +40,7 @@ const makeSlug = ({ title, slug }: BaseFrontmatter): string => (
 )
 
 // Gets the base data for creating an index node from a node.
-const getIndexDataFromNode = (({
+export const getIndexDataFromNode = (({
   type, title, slug, date, image, keywords, secret,
 }) => ({
   type, title, slug, date, image, keywords, secret,
@@ -47,31 +49,38 @@ const getIndexDataFromNode = (({
 // A map of all file node ids keyed on their absolute path
 const fileNodeIds = {}
 
-// a function for creating an `INDEX_NODE_TYPE` node.
-const createIndexNode = (index, parentNode, {
-  actions: { createNode }, getNode, createNodeId, createContentDigest,
-}) => {
+// a function for creating FIXME
+export const createTransitionalIndexNode = (index, parentNode, helpers) => {
+  const { getNode } = helpers
   // get the absolute path of the image
   const imagePath = path.join(getNode(parentNode).dir, index.image)
+  createIndexNode({
+    ...index,
+    slug: makeSlug(index),
+    // overwrite with the id of the image's node
+    image: fileNodeIds[imagePath],
+  }, helpers, INDEX_TRANS_NODE_TYPE)
+}
 
+// a function for creating an `INDEX_NODE_TYPE` node.
+const createIndexNode = (index, {
+  actions: { createNode }, createNodeId, createContentDigest,
+}, indexNodeType=INDEX_NODE_TYPE) => (
   createNode({
     ...index,
-    id: createNodeId(`${INDEX_NODE_TYPE}-${makeSlug(index)}`), // hashes the inputs into an ID
-    slug: makeSlug(index),
-    parent: null,
-    children: [],
+    id: createNodeId(`${indexNodeType}-${makeSlug(index)}`), // hashes the inputs into an ID
     internal: {
-      type: INDEX_NODE_TYPE,
+      type: indexNodeType,
       content: JSON.stringify(index),
       contentDigest: createContentDigest(index),
     },
-    // provide the id of the image's node
-    imageId: fileNodeIds[imagePath],
+    parent: null,
+    children: [],
   })
-}
+)
 
-export const sourceNodes = (helpers) => {
-  const { getNodesByType } = helpers
+export const sourceNodes = (args) => {
+  const { getNodesByType } = args
 
   // Create a map of all file node ids keyed on their absolute path
   getNodesByType('File').forEach((node) => {
@@ -80,22 +89,23 @@ export const sourceNodes = (helpers) => {
 
   // create the `INDEX_NODE_TYPE` nodes for all the `Mdx` nodes
   getNodesByType('Mdx').forEach((node) => (
-    createIndexNode(getIndexDataFromNode(node.frontmatter), node.parent, helpers)
+    createTransitionalIndexNode(getIndexDataFromNode(node.frontmatter), node.parent, args)
   ))
 
   // create the `INDEX_NODE_TYPE` nodes for all the `pdf` nodes
   getNodesByType('pdf').forEach((node) => (
-    createIndexNode(getIndexDataFromNode({ ...node, type: 'PDF' }), node.parent, helpers)
+    createTransitionalIndexNode(getIndexDataFromNode({ ...node, type: 'PDF' }), node.parent, args)
   ))
 }
 
-export const onCreateNode = async ({
-  actions: { createNodeField }, node,
-}) => {
+export const onCreateNode = async (args) => {
+  const { actions: { createNodeField }, node } = args
   // For all `INDEX_NODE_TYPE` nodes ..
-  if (node.internal.type === INDEX_NODE_TYPE) {
-    // .. use the `imageId` provided by `sourceNodes()` to create the `image` `File` node field.
-    createNodeField({ node, name: 'image', value: node.imageId })
+  if (node.internal.type === INDEX_TRANS_NODE_TYPE) {
+    createIndexNode(getIndexDataFromNode(node), args)
+  } else if (node.internal.type === INDEX_NODE_TYPE) {
+    // .. use the image id provided by `sourceNodes()` to create the `image` `File` node field.
+    createNodeField({ node, name: 'image', value: node.image })
   }
 }
 
